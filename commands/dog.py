@@ -1,22 +1,22 @@
 import requests
 from .basic import CommandBase
 
-class Cat(CommandBase):
-    name = "Cat"
-    safename = "cat"
+class Dog(CommandBase):
+    name = "Dog"
+    safename = "dog"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("cat", self.execute, "Displays a random cat image.")]
+        self.to_register = [("dog", self.execute, "Displays a random dog image.")]
     def load_config(self, confdict):
         pass
     def get_help_msg(self):
-        return "Call /cat with no arguments."
+        return "Call /dog with no arguments."
     def execute(self, bot, update):
         try:
-            data = requests.head("http://thecatapi.com/api/images/get")
+            data = requests.get("https://dog.ceo/api/breeds/image/random").json()
             bot.send_photo(chat_id = update.message.chat_id, 
-                           photo = data.headers["Location"],
+                           photo = data["message"],
                            disable_notification = True)
-            self.logger.info("/cat executed successfully.")
+            self.logger.info("/dog executed successfully.")
         except Exception as e:
             self.logger.exception(e)

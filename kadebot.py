@@ -4,6 +4,7 @@ import os
 import argparse
 
 from commands.cat import Cat
+from commands.dog import Dog
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -14,14 +15,24 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 baseconf = dict()
-commands = [Cat(logging)]
+commands = [Cat(logging),
+            Dog(logging)]
+
+def help(bot, update):
+    out = ""
+    for cmd in commands:
+        for name, func, msg in cmd.to_register:
+            out += "/{} - {}\n".format(name, msg)
+    bot.send_message(chat_id = update.message.chat_id, 
+                     text = out,
+                     disable_notification = True)
 
 def main():
     updater = Updater(token = baseconf["api_key"])
     dispatcher = updater.dispatcher
+    dispatcher.add_handler(CommandHandler("help", help))
     for cmd in commands:
-        for name, func in cmd.to_register:
-            print(name)
+        for name, func, msg in cmd.to_register:
             dispatcher.add_handler(CommandHandler(name, func))
     updater.start_polling()
 
