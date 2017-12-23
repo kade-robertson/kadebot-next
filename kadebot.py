@@ -23,7 +23,7 @@ regdhelp = dict()
 def help(bot, update):
     args = shlex.split(update.message.text)
     if len(args) > 1:
-        cmd = args[2]
+        cmd = args[1]
         if cmd in regdhelp.keys():
             dat = regdhelp[cmd].get_help_msg(cmd)
             out = "Help for /{}\n\n{}".format(cmd, dat)
