@@ -21,7 +21,7 @@ commands = [Cat(logging),
 regdhelp = dict()
 
 def help(bot, update):
-    args = shlex.split(update.message.text):
+    args = shlex.split(update.message.text)
     if len(args) > 1:
         cmd = args[2]
         if cmd in regdhelp.keys():
