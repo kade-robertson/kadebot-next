@@ -1,5 +1,3 @@
-import shlex
-
 class CommandBase:
     name = "BaseCommand"
     safename = "basecommand"
@@ -9,7 +7,7 @@ class CommandBase:
         self.to_register = []
     def load_config(self, confdict):
         raise NotImplementedError
-    def get_help_msg(self):
+    def get_help_msg(self, cmd):
         raise NotImplementedError
     def execute(self, bot, update):
         raise NotImplementedError

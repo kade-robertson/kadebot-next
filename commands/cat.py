@@ -9,7 +9,7 @@ class Cat(CommandBase):
         self.to_register = [("cat", self.execute, "Displays a random cat image.")]
     def load_config(self, confdict):
         pass
-    def get_help_msg(self):
+    def get_help_msg(self, cmd):
         return "Call /cat with no arguments."
     def execute(self, bot, update):
         try:
