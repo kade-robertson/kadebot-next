@@ -3,7 +3,6 @@
 import os
 import sys
 import shlex
-import psutil
 import argparse
 
 from commands.cat import Cat
