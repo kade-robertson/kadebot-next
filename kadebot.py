@@ -17,7 +17,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 baseconf = dict()
 commands = [Cat(logging),
-            Dog(logging)]
+            Dog(logging),
+            EightBall(logging)]
 regdhelp = dict()
 
 def help(bot, update):
@@ -26,7 +27,7 @@ def help(bot, update):
         cmd = args[1]
         if cmd in regdhelp.keys():
             dat = regdhelp[cmd].get_help_msg(cmd)
-            out = "Help for /{}\n\n{}".format(cmd, dat)
+            out = "Help for /{}:\n\n{}".format(cmd, dat)
             bot.send_message(chat_id = update.message.chat_id, 
                              text = out,
                              disable_notification = True)
