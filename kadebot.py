@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 import os
+import sys
 import shlex
+import psutil
 import argparse
 
 from commands.cat import Cat
@@ -21,6 +23,12 @@ commands = [Cat(logging),
             Dog(logging),
             EightBall(logging)]
 regdhelp = dict()
+
+def reload(bot, update):
+    if update.message.from_user.id == baseconf["owner"]:
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
+
 
 def help(bot, update):
     args = shlex.split(update.message.text)
@@ -46,6 +54,7 @@ def main():
     updater = Updater(token = baseconf["api_key"])
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("help", help))
+    dispatcher.add_handler(CommandHandler("reload", reload))
     for cmd in commands:
         for name, func, msg in cmd.to_register:
             dispatcher.add_handler(CommandHandler(name, func))
@@ -70,3 +79,4 @@ if __name__ == "__main__":
     if os.path.exists(args.config):
         load_config(args.config)
     main()
+    logging.info("Loaded.")
