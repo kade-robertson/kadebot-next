@@ -8,6 +8,7 @@ import argparse
 from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
+from commands.wolfram import Wolfram
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -20,7 +21,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 baseconf = dict()
 commands = [Cat(logging),
             Dog(logging),
-            EightBall(logging)]
+            EightBall(logging),
+            Wolfram(logging)]
 regdhelp = dict()
 
 def reload(bot, update):
