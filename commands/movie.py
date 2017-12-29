@@ -18,7 +18,8 @@ class Movie(CommandBase):
         if cmd == "movie":
             return 'Call /movie <id> with the IMDb ID of the movie you want information for.'
         elif cmd == "moviesearch":
-            return 'Call /moviesearch <search> with the title you wish to search for, using quotes if there are spaces'
+            return ('Call /moviesearch <search> with the title you wish to search for, '
+                    'using quotes if there are spaces.')
     def execute_movie(self, bot, update):
         try:
             args = shlex.split(update.message.text)
