@@ -8,6 +8,7 @@ import argparse
 from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
+from commands.movie import Movie
 from commands.wolfram import Wolfram
 
 from telegram.ext import Updater
@@ -22,11 +23,12 @@ baseconf = dict()
 commands = [Cat(logging),
             Dog(logging),
             EightBall(logging),
-            Wolfram(logging)]
+            Wolfram(logging),
+            Movie(logging)]
 regdhelp = dict()
 
 def reload(bot, update):
-    if update.message.from_user.id == baseconf["owner"]:
+    if update.message.from_user.id in baseconf["admins"]:
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
