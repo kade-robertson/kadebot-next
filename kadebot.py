@@ -54,6 +54,12 @@ def help(bot, update):
                          text = out,
                          disable_notification = True)
 
+def error_handler(bot, update, error):
+    try:
+        raise error
+    except Exception as e:
+        logging.error(e)
+
 def main():
     global regdhelp
     updater = Updater(token = baseconf["api_key"])
@@ -65,6 +71,7 @@ def main():
             dispatcher.add_handler(CommandHandler(name, func))
             regdhelp[name] = cmd
             logging.info("Registered command /{}".format(name))
+    dispatcher.add_error_handler(error_handler)
     updater.start_polling()
 
 def load_config(filename):
