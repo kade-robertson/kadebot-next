@@ -9,6 +9,7 @@ from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
 from commands.movie import Movie
+from commands.wikipedia import Wikipedia
 from commands.wolfram import Wolfram
 
 from telegram.ext import Updater
@@ -20,11 +21,12 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 baseconf = dict()
-commands = [Cat(logging),
-            Dog(logging),
-            EightBall(logging),
-            Wolfram(logging),
-            Movie(logging)]
+commands = [ Cat(logging),
+             Dog(logging),
+             EightBall(logging),
+             Wolfram(logging),
+             Movie(logging),
+             Wikipedia(logging) ]
 regdhelp = dict()
 
 def reload(bot, update):
