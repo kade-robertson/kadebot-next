@@ -31,9 +31,15 @@ regdhelp = dict()
 
 def reload(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
+        logging.info("Reloading chat bot now...")
         python = sys.executable
         os.execv(python, ['python3'] + sys.argv)
 
+def update(bot, update):
+    if update.message.from_user.id in baseconf["admins"]:
+        logging.info("Updating bot...")
+        os.system("git pull --force")
+        reload(bot, update)
 
 def help(bot, update):
     args = shlex.split(update.message.text)
@@ -66,6 +72,7 @@ def main():
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("help", help))
     dispatcher.add_handler(CommandHandler("reload", reload))
+    dispatcher.add_handler(CommandHandler("update", update))
     for cmd in commands:
         for name, func, msg in cmd.to_register:
             dispatcher.add_handler(CommandHandler(name, func))
