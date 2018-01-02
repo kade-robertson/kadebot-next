@@ -56,7 +56,7 @@ class Movie(CommandBase):
             args = shlex.split(update.message.text)
             if len(args) != 2:
                 bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /movie.",
+                                 text = "This doesn't seem like correct usage of /moviesearch.",
                                  disable_notification = True)
                 return
             results = self.api.get(search = args[1])

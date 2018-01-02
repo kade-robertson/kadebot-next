@@ -32,7 +32,7 @@ regdhelp = dict()
 def reload(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
         python = sys.executable
-        os.execl(python, python, *sys.argv)
+        os.execv(__file__, sys.argv)
 
 
 def help(bot, update):
@@ -64,6 +64,7 @@ def main():
         for name, func, msg in cmd.to_register:
             dispatcher.add_handler(CommandHandler(name, func))
             regdhelp[name] = cmd
+            logging.info("Registered command /{}".format(name))
     updater.start_polling()
 
 def load_config(filename):
@@ -83,5 +84,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if os.path.exists(args.config):
         load_config(args.config)
-    main()
-    logging.info("Loaded.")
+        logging.info("Loaded configuration.")
+        main()
+    else:
+        logging.error("No config file found.")
