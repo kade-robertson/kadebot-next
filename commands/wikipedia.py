@@ -25,7 +25,7 @@ class Wikipedia(CommandBase):
                                  text = "This doesn't seem like correct usage of /wiki.",
                                  disable_notification = True)
                 return
-            output = wikipedia.summary(args[1], sentences=5)
+            output = wikipedia.summary(args[1], sentences = 4).replace(" ( listen) ", "")
             bot.send_message(chat_id = update.message.chat_id,
                              text = output,
                              disable_notification = True)
