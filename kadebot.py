@@ -32,7 +32,7 @@ regdhelp = dict()
 def reload(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
         python = sys.executable
-        os.execv(__file__, sys.argv)
+        os.execv(python, ['python3'] + sys.argv)
 
 
 def help(bot, update):
