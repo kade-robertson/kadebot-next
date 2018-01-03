@@ -10,6 +10,7 @@ from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
 from commands.movie import Movie
+from commands.randomaww import RandomAww
 from commands.translate import Translate
 from commands.wikipedia import Wikipedia
 from commands.wolfram import Wolfram
@@ -29,7 +30,8 @@ commands = [ Cat(logging),
              Wolfram(logging),
              Movie(logging),
              Wikipedia(logging),
-             Translate(logging) ]
+             Translate(logging),
+             RandomAww(logging) ]
 regdhelp = dict()
 
 def kill(bot, update):
