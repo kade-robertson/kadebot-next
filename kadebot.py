@@ -29,6 +29,12 @@ commands = [ Cat(logging),
              Wikipedia(logging) ]
 regdhelp = dict()
 
+def kill(bot, update):
+    if update.message.from_user.id in baseconf["admins"]:
+        logging.info("Admin killed the bot, shutting down.")
+        sys.stdout.flush()
+        os._exit(0)
+
 def reload(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
         logging.info("Reloading chat bot now...")
@@ -73,6 +79,7 @@ def main():
     dispatcher.add_handler(CommandHandler("help", help))
     dispatcher.add_handler(CommandHandler("reload", reload))
     dispatcher.add_handler(CommandHandler("update", update))
+    dispatcher.add_handler(CommandHandler("kill", kill))
     for cmd in commands:
         for name, func, msg in cmd.to_register:
             dispatcher.add_handler(CommandHandler(name, func))
