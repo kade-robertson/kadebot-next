@@ -10,6 +10,7 @@ from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
 from commands.movie import Movie
+from commands.translate import Translate
 from commands.wikipedia import Wikipedia
 from commands.wolfram import Wolfram
 
@@ -17,12 +18,6 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
 from ruamel.yaml import YAML
 yaml = YAML(typ="safe", pure=True)
-
-from langdetect import detect, DetectorFactory
-from translate import Translator
-DetectorFactory.seed = 0
-translator = Translator(from_lang = "autodetect", to_lang = "en")
-
 
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -33,7 +28,8 @@ commands = [ Cat(logging),
              EightBall(logging),
              Wolfram(logging),
              Movie(logging),
-             Wikipedia(logging) ]
+             Wikipedia(logging),
+             Translate(logging) ]
 regdhelp = dict()
 
 def kill(bot, update):
@@ -53,16 +49,6 @@ def update(bot, update):
         logging.info("Updating bot...")
         os.system("git pull --force")
         reload(bot, update)
-
-def monitor(bot, update):
-    # See if message needs translation.
-    lang = detect(update.message.text)
-    if lang != 'en':
-        new = translator.provider.get_translation(update.message.text)
-        bot.send_message(chat_id = update.message.chat_id,
-                         text = "Translation: {}".format(new),
-                         disable_notification = True)
-
 
 def help(bot, update):
     args = shlex.split(update.message.text)
@@ -102,7 +88,6 @@ def main():
             dispatcher.add_handler(CommandHandler(name, func))
             regdhelp[name] = cmd
             logging.info("Registered command /{}".format(name))
-    dispatcher.add_handler(MessageHandler(Filters.text, monitor))
     dispatcher.add_error_handler(error_handler)
     updater.start_polling()
 
@@ -117,11 +102,6 @@ def load_config(filename):
         section = "command.{}".format(cmd.safename)
         if section in conf.keys():
             cmd.load_config(conf[section])
-    if "translate_key" in baseconf.keys():
-        translator = Translator(provider = "microsoft", 
-                                from_lang = "autodetect",
-                                to_lang = "en",
-                                secret_access_key = baseconf["translate_key"])
         
 if __name__ == "__main__":
     parser  = argparse.ArgumentParser()
