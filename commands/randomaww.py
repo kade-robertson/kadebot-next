@@ -10,7 +10,7 @@ class RandomAww(CommandBase):
     def load_config(self, confdict):
         self.api = praw.Reddit(client_id = confdict["client_id"],
                                client_secret = confdict["client_secret"],
-                               user_agent = condfdict["user_agent"])
+                               user_agent = confdict["user_agent"])
         self.api.read_only = True
     def get_help_msg(self, cmd):
         return "Call /randomaww with no arguments."
