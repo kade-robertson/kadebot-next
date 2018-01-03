@@ -56,7 +56,6 @@ def update(bot, update):
 
 def monitor(bot, update):
     # See if message needs translation.
-    print(vars(translator.provider))
     lang = detect(update.message.text)
     if lang != 'en':
         new = translator.provider.get_translation(update.message.text)
