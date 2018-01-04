@@ -1,3 +1,12 @@
+# Randomaww plugin
+# Commands:
+#   - /randomaww
+# Configuration:
+# command.randomaww:
+#   client_id: "reddit client_id"
+#   client_secret: "reddit client_secret"
+#   user_agent: "name of your bot"
+
 import praw
 from .basic import CommandBase
 
