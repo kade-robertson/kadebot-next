@@ -1,3 +1,10 @@
+# Translate plugin
+# Commands:
+#   - /t
+# Configuration:
+# command.translate:
+#   api_key: "microsoft translate api key" (optional)
+
 import shlex
 from translate import Translator
 from .basic import CommandBase
