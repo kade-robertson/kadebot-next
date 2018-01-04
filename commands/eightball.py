@@ -1,3 +1,8 @@
+# Eightball plugin
+# Commands:
+#   - /8ball
+# Configuration: None
+
 import random
 from .basic import CommandBase
 
