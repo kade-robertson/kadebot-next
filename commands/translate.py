@@ -1,6 +1,5 @@
-from translate import Translator
-DetectorFactory.seed = 0
 import shlex
+from translate import Translator
 from .basic import CommandBase
 
 class Translate(CommandBase):
