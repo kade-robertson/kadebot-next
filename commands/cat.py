@@ -1,3 +1,8 @@
+# Cat plugin
+# Commands:
+#   - /cat
+# Configuration: None
+
 import requests
 from .basic import CommandBase
 
