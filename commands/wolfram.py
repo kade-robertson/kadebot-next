@@ -1,3 +1,10 @@
+# WolframAlpha plugin
+# Commands:
+#   - /wolfram
+# Configuration:
+# command.wolfram:
+#   api_key: "wolfram alpha api key"
+
 import shlex
 import wolframalpha
 from .basic import CommandBase
