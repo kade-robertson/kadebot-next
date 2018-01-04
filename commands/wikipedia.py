@@ -1,3 +1,9 @@
+# Wikipedia plugin
+# Commands:
+#   - /wiki
+#   - /wikisearch
+# Configuration: None
+
 import shlex
 import wikipedia
 from .basic import CommandBase
