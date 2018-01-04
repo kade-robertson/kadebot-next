@@ -7,7 +7,7 @@ A Telegram chat bot, built in Python.
 1. Clone the repository.
 2. Install the required dependencies:
    ```
-   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolfram-alpha
+   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha
    ```
    You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges.
 3. Get a bot token for Telegram, through @BotFather.
