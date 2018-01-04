@@ -1,3 +1,8 @@
+# Dog plugin
+# Commands:
+#   - /dog
+# Configuration: None
+
 import requests
 from .basic import CommandBase
 
