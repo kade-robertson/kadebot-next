@@ -1,4 +1,3 @@
-from langdetect import detect, DetectorFactory
 from translate import Translator
 DetectorFactory.seed = 0
 import shlex
