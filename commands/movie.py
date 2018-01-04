@@ -1,3 +1,11 @@
+# Movie plugin
+# Commands:
+#   - /movie
+#   - /moviesearch
+# Configuration:
+# command.movie:
+#   api_key: "OMDb api key"
+
 import re
 import omdb
 import shlex
