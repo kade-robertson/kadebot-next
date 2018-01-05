@@ -2,4 +2,5 @@
 *.conf
 !default.conf
 *.db
+markov_data/*
 .vscode/*

@@ -1,11 +1,12 @@
 from enum import Enum
+from telegram.ext import Filters
 
 class CommandType(Enum):
     Default = 0
     Monitor = 1
 
 class CommandInfo:
-    def __init__(self, name, func, shorthelp, _type=CommandType.Default, alias=None, filter=None):
+    def __init__(self, name, func, shorthelp, _type=CommandType.Default, alias=None, filter=Filters.text):
         self.name = name
         self.func = func
         self.helpmsg = shorthelp
