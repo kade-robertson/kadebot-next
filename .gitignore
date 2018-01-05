@@ -1,4 +1,5 @@
 *.pyc
 *.conf
+!default.conf
 *.db
 .vscode/*
