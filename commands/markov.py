@@ -32,7 +32,6 @@ class Markov(CommandBase):
                     udata = f.read()
                     user = file.split('.json')[0]
                     data = markovify.Text.from_json(udata)
-                    print(user, data)
                     self.users[user] = data
     def on_exit(self):
         self.logger.info("  Saving collected Markov data..")
