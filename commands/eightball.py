@@ -32,8 +32,6 @@ class EightBall(CommandBase):
     def __init__(self, logger):
         super().__init__(logger)
         self.to_register = [("8ball", self.execute, "Shake an 8-ball.")]
-    def load_config(self, confdict):
-        pass
     def get_help_msg(self, cmd):
         return "Call /8ball with no arguments."
     def execute(self, bot, update):

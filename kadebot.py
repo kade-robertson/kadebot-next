@@ -37,6 +37,8 @@ regdhelp = dict()
 def kill(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
         logging.info("Admin killed the bot, shutting down.")
+        for cmd in commands:
+            cmd.on_exit()
         sys.stdout.flush()
         os._exit(0)
 

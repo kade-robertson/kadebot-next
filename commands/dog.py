@@ -12,8 +12,6 @@ class Dog(CommandBase):
     def __init__(self, logger):
         super().__init__(logger)
         self.to_register = [("dog", self.execute, "Displays a random dog image.")]
-    def load_config(self, confdict):
-        pass
     def get_help_msg(self, cmd):
         return "Call /dog with no arguments."
     def execute(self, bot, update):

@@ -15,8 +15,6 @@ class Wikipedia(CommandBase):
         super().__init__(logger)
         self.to_register = [("wiki", self.execute_summary, "Displays a Wikipedia summary."),
                             ("wikisearch", self.execute_search, "Searches for a Wikipedia article.")]
-    def load_config(self, confdict):
-        pass
     def get_help_msg(self, cmd):
         if cmd == "wiki":
             return 'Call /wiki <page> with the Wikipedia article you want the summary for.'
