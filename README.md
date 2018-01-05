@@ -23,7 +23,7 @@ Configuration for individual commands can be seen in the command file itself, or
 1. Clone the repository.
 2. Install the required dependencies:
    ```
-   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha
+   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha markovify
    ```
    You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges.
 3. Get a bot token for Telegram, through @BotFather.
