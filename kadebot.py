@@ -66,7 +66,8 @@ def help(bot, update):
         out = ""
         for cmd in commands:
             for name, func, msg in cmd.to_register:
-                out += "/{} - {}\n".format(name, msg)
+                if not name in baseconf["disabled"]:
+                    out += "/{} - {}\n".format(name, msg)
         bot.send_message(chat_id = update.message.chat_id, 
                          text = out,
                          disable_notification = True)
@@ -87,6 +88,9 @@ def main():
     dispatcher.add_handler(CommandHandler("kill", kill))
     for cmd in commands:
         for name, func, msg in cmd.to_register:
+            if name in baseconf["disabled"]:
+                logging.info("Disabled command /{}".format(name))
+                continue
             dispatcher.add_handler(CommandHandler(name, func))
             regdhelp[name] = cmd
             logging.info("Registered command /{}".format(name))
