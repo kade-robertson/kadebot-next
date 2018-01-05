@@ -48,6 +48,8 @@ def kill(bot, update):
 def reload(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
         logging.info("Reloading chat bot now...")
+        for cmd in commands:
+            cmd.on_exit()
         python = sys.executable
         os.execv(python, ['python3'] + sys.argv)
 
