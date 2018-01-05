@@ -10,7 +10,7 @@ import re
 import omdb
 import shlex
 import requests
-from .basic import CommandBase
+from .basic import *
 
 class Movie(CommandBase):
     name = 'Movie'
@@ -18,8 +18,10 @@ class Movie(CommandBase):
     def __init__(self, logger):
         super().__init__(logger)
         self.idmatch = re.compile('tt[0-9]{7}')
-        self.to_register = [("movie", self.execute_movie, "Displays movie information."),
-                            ("moviesearch", self.execute_search, "Searches for a movie.")]
+        self.to_register = [
+            CommandInfo("movie", self.execute_movie, "Displays movie information."),
+            CommandInfo("moviesearch", self.execute_search, "Searches for a movie.")
+        ]
     def load_config(self, confdict):
         self.api = omdb.Client(apikey = confdict["api_key"])
     def get_help_msg(self, cmd):

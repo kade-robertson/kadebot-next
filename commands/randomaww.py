@@ -8,14 +8,16 @@
 #   user_agent: "name of your bot"
 
 import praw
-from .basic import CommandBase
+from .basic import *
 
 class RandomAww(CommandBase):
     name = "RandomAww"
     safename = "randomaww"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("randomaww", self.execute, "Displays a random image from /r/aww.")]
+        self.to_register = [
+            CommandInfo("randomaww", self.execute, "Displays a random image from /r/aww.")
+        ]
     def load_config(self, confdict):
         self.api = praw.Reddit(client_id = confdict["client_id"],
                                client_secret = confdict["client_secret"],

@@ -7,14 +7,16 @@
 
 import shlex
 import wolframalpha
-from .basic import CommandBase
+from .basic import *
 
 class Wolfram(CommandBase):
     name = "Wolfram"
     safename = "wolfram"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("wolfram", self.execute, "Ask Wolfram Alpha a question.")]
+        self.to_register = [
+            CommandInfo("wolfram", self.execute, "Ask Wolfram Alpha a question.")
+        ]
     def load_config(self, confdict):
         self.api = wolframalpha.Client(confdict["api_key"])
     def get_help_msg(self, cmd):

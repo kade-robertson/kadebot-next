@@ -4,7 +4,7 @@
 # Configuration: None
 
 import random
-from .basic import CommandBase
+from .basic import *
 
 class EightBall(CommandBase):
     name = "8-ball"
@@ -31,7 +31,9 @@ class EightBall(CommandBase):
                "Very doubtful"]
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("8ball", self.execute, "Shake an 8-ball.")]
+        self.to_register = [
+            CommandInfo("8ball", self.execute, "Shake an 8-ball.")
+        ]
     def get_help_msg(self, cmd):
         return "Call /8ball with no arguments."
     def execute(self, bot, update):

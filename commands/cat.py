@@ -4,14 +4,16 @@
 # Configuration: None
 
 import requests
-from .basic import CommandBase
+from .basic import *
 
 class Cat(CommandBase):
     name = "Cat"
     safename = "cat"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("cat", self.execute, "Displays a random cat image.")]
+        self.to_register = [
+            CommandInfo("cat", self.execute, "Displays a random cat image.")
+        ]
     def get_help_msg(self, cmd):
         return "Call /cat with no arguments."
     def execute(self, bot, update):

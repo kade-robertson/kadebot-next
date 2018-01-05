@@ -4,14 +4,16 @@
 # Configuration: None
 
 import requests
-from .basic import CommandBase
+from .basic import *
 
 class Dog(CommandBase):
     name = "Dog"
     safename = "dog"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("dog", self.execute, "Displays a random dog image.")]
+        self.to_register = [
+            CommandInfo("dog", self.execute, "Displays a random dog image.")
+        ]
     def get_help_msg(self, cmd):
         return "Call /dog with no arguments."
     def execute(self, bot, update):

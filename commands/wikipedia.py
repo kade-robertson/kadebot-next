@@ -6,15 +6,17 @@
 
 import shlex
 import wikipedia
-from .basic import CommandBase
+from .basic import *
 
 class Wikipedia(CommandBase):
     name = 'Wikipedia'
     safename = 'wikipedia'
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("wiki", self.execute_summary, "Displays a Wikipedia summary."),
-                            ("wikisearch", self.execute_search, "Searches for a Wikipedia article.")]
+        self.to_register = [
+            CommandInfo("wiki", self.execute_summary, "Displays a Wikipedia summary."),
+            CommandInfo("wikisearch", self.execute_search, "Searches for a Wikipedia article.")
+        ]
     def get_help_msg(self, cmd):
         if cmd == "wiki":
             return 'Call /wiki <page> with the Wikipedia article you want the summary for.'

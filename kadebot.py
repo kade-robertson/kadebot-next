@@ -5,7 +5,7 @@ import sys
 import shlex
 import argparse
 
-
+from commands.basic import *
 from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
@@ -67,9 +67,12 @@ def help(bot, update):
     else:
         out = ""
         for cmd in commands:
-            for name, func, msg in cmd.to_register:
-                if not name in baseconf["disabled"]:
-                    out += "/{} - {}\n".format(name, msg)
+            for ci in cmd.to_register:
+                if not ci.name in baseconf["disabled"] and not ci.type == CommandType.Monitor:
+                    if ci.alias != None:
+                        out += "/{}, /{} - {}\n".format(ci.name, ci.alias, ci.helpmsg)
+                    else:
+                        out += "/{} - {}\n".format(ci.name, ci.helpmsg)
         bot.send_message(chat_id = update.message.chat_id, 
                          text = out,
                          disable_notification = True)
@@ -89,13 +92,25 @@ def main():
     dispatcher.add_handler(CommandHandler("update", update))
     dispatcher.add_handler(CommandHandler("kill", kill))
     for cmd in commands:
-        for name, func, msg in cmd.to_register:
-            if name in baseconf["disabled"]:
-                logging.info("Disabled command /{}".format(name))
+        for ci in cmd.to_register:
+            if ci.name in baseconf["disabled"]:
+                logging.info("Disabled command /{}".format(ci.name))
                 continue
-            dispatcher.add_handler(CommandHandler(name, func))
-            regdhelp[name] = cmd
-            logging.info("Registered command /{}".format(name))
+            if ci.name in baseconf["disabled_monitors"]:
+                logging.info("Disabled monitor {}".format(ci.name))
+                continue
+            if ci.type == CommandType.Default:
+                dispatcher.add_handler(CommandHandler(ci.name, ci.func))
+                regdhelp[ci.name] = cmd
+                if ci.alias != None:
+                    dispatcher.add_handler(CommandHandler(ci.alias, ci.func))
+                    regdhelp[ci.alias] = cmd
+                    logging.info("Registered command /{}, /{}".format(ci.name, ci.alias))
+                else:
+                    logging.info("Registered command /{}".format(ci.name))
+            else:
+                dispatcher.add_handler(MessageHandler(ci.filter, ci.func))
+                logging.info("Registered monitor {}".format(ci.name))
     dispatcher.add_error_handler(error_handler)
     updater.start_polling()
 

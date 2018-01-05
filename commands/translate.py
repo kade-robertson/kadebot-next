@@ -7,14 +7,16 @@
 
 import shlex
 from translate import Translator
-from .basic import CommandBase
+from .basic import *
 
 class Translate(CommandBase):
     name = "Translate"
     safename = "translate"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = [("t", self.execute, "Translate text to English.")]
+        self.to_register = [
+            CommandInfo("translate", self.execute, "Translate text to English.", alias="t")
+        ]
     def load_config(self, confdict):
         if confdict is not None and "api_key" in confdict.keys():
             self.translator = Translator(provider = "microsoft", 
@@ -24,7 +26,7 @@ class Translate(CommandBase):
         else:
             self.translator = Translator(from_lang = "autodetect", to_lang = "en")
     def get_help_msg(self, cmd):
-        return "Call /t <string> to translate any string to English."
+        return "Call /{} <string> to translate any string to English.".format(cmd)
     def execute(self, bot, update):
         try:
             text = " ".join(shlex.split(update.message.text)[1:])
