@@ -14,6 +14,7 @@ base:
   disabled:
     - t
     - randomaww
+  disabled_monitors: []
 ```
 Configuration for individual commands can be seen in the command file itself, or refer to the `default.conf` to see what options are available.
 
