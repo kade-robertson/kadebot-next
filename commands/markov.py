@@ -1,3 +1,12 @@
+# Markov plugin
+# Commands:
+#   - /markov
+# Monitors:
+#   - markov_monitor
+# Configuration:
+# command.markov:
+#   folder: "markov data folder"
+
 import os
 import markovify
 from .basic import *
