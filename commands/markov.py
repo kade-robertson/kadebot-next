@@ -43,24 +43,32 @@ class Markov(CommandBase):
                 f.write(udata)
         self.logger.info("  Done saving.")
     def execute_generate(self, bot, update):
-        user = str(update.message.from_user.id)
-        if user in self.users:
-            bot.send_message(chat_id = update.message.chat_id,
-                             text = self.users[user].make_sentence(test_output = False),
-                             disable_notification = True)
-        else:
-            bot.send_message(chat_id = update.message.chat_id,
-                             text = "I currently have no data from you, try later.",
-                             disable_notification = True)
+        try:
+            user = str(update.message.from_user.id)
+            if user in self.users:
+                bot.send_message(chat_id = update.message.chat_id,
+                                 text = self.users[user].make_sentence(test_output = False),
+                                 disable_notification = True)
+            else:
+                bot.send_message(chat_id = update.message.chat_id,
+                                 text = "I currently have no data from you, try later.",
+                                 disable_notification = True)
+            self.logger.info("Command /markov completed successfully.")
+        except Exception as e:
+            self.logger.error(e)
     def monitor_modeling(self, bot, update):
-        user = str(update.message.from_user.id)
-        intext = update.message.text
-        if intext[-1] not in ".!?":
-            intext += "."
-        new = markovify.Text(update.message.text, state_size = 1)
-        self.logger.info("  Adding to a Markov model..")
-        if user not in self.users:
-            self.users[user] = new
-        else:
-            self.users[user] = markovify.combine(models=[self.users[user], new])
-        self.logger.info("  Adding done.")
+        try:
+            user = str(update.message.from_user.id)
+            intext = update.message.text
+            if intext[-1] not in ".!?":
+                intext += "."
+            new = markovify.Text(update.message.text, state_size = 1)
+            self.logger.info("  Adding to a Markov model..")
+            if user not in self.users:
+                self.users[user] = new
+            else:
+                self.users[user] = markovify.combine(models=[self.users[user], new])
+            self.logger.info("  Adding done.")
+            self.logger.info("markov_monitor processing completed successfully.")
+        except Exception as e:
+            self.logger.error(e)

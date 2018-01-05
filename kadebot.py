@@ -12,6 +12,7 @@ from commands.eightball import EightBall
 from commands.markov import Markov
 from commands.movie import Movie
 from commands.randomaww import RandomAww
+from commands.sonnetgen import SonnetGen
 from commands.translate import Translate
 from commands.wikipedia import Wikipedia
 from commands.wolfram import Wolfram
@@ -33,7 +34,8 @@ commands = [ Cat(logging),
              Wikipedia(logging),
              Translate(logging),
              RandomAww(logging),
-             Markov(logging) ]
+             Markov(logging),
+             SonnetGen(logging) ]
 regdhelp = dict()
 
 def kill(bot, update):
