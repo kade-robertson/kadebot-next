@@ -9,6 +9,7 @@ from commands.basic import *
 from commands.cat import Cat
 from commands.dog import Dog
 from commands.eightball import EightBall
+from commands.markov import Markov
 from commands.movie import Movie
 from commands.randomaww import RandomAww
 from commands.translate import Translate
@@ -31,7 +32,8 @@ commands = [ Cat(logging),
              Movie(logging),
              Wikipedia(logging),
              Translate(logging),
-             RandomAww(logging) ]
+             RandomAww(logging),
+             Markov(logging) ]
 regdhelp = dict()
 
 def kill(bot, update):
@@ -39,6 +41,7 @@ def kill(bot, update):
         logging.info("Admin killed the bot, shutting down.")
         for cmd in commands:
             cmd.on_exit()
+        logging.info("Cleanup done, exiting.")
         sys.stdout.flush()
         os._exit(0)
 
