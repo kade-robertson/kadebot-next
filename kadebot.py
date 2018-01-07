@@ -5,17 +5,7 @@ import sys
 import shlex
 import argparse
 
-from commands.basic import *
-from commands.cat import Cat
-from commands.dog import Dog
-from commands.eightball import EightBall
-from commands.markov import Markov
-from commands.movie import Movie
-from commands.randomaww import RandomAww
-from commands.sonnetgen import SonnetGen
-from commands.translate import Translate
-from commands.wikipedia import Wikipedia
-from commands.wolfram import Wolfram
+from commands import *
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
