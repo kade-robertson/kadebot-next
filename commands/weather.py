@@ -48,11 +48,11 @@ class Weather(CommandBase):
             form = "<b>Weather for {}, {}:</b>\n".format(data['name'], data['sys']['country'])
             form += " - {}\n".format(data['weather'][0]['description'].capitalize())
             form += " - Current {:.1f}°C / High {:.1f}°C / Low {:.1f}°C\n".format(temp, tmin, tmax)
-            form += " - Wind: {} km/h".format(data['wind']['speed'])
+            form += " - Wind: {:.1f} km/h".format(data['wind']['speed'])
             if 'deg' in data['wind']:
-                form += "{}".format(self.card(data['wind']['deg']))
+                form += " {}".format(self.card(data['wind']['deg']))
             if 'gust' in data['wind']:
-                form += " (Gust: {} km/h)".format(data['wind']['gust'])
+                form += " (Gust: {:.1f} km/h)".format(data['wind']['gust'])
             bot.send_message(chat_id = update.message.chat_id,
                              parse_mode = ParseMode.HTML,
                              text = form,
