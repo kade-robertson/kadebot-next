@@ -63,6 +63,4 @@ class Weather(CommandBase):
                              text = "The location you chose seems to be invalid.",
                              disable_notification = True)
         except Exception as e:
-            raise e
-            print(e)
             self.logger.error(e)
