@@ -25,7 +25,8 @@ commands = [ Cat(logging),
              Translate(logging),
              RandomAww(logging),
              Markov(logging),
-             SonnetGen(logging) ]
+             SonnetGen(logging),
+             Weather(logging) ]
 regdhelp = dict()
 
 def kill(bot, update):
