@@ -9,6 +9,7 @@
 import shlex
 import urllib
 import openweathermapy.core as owm
+from telegram import ParseMode
 from .basic import *
 
 class Weather(CommandBase):
@@ -44,20 +45,21 @@ class Weather(CommandBase):
                 return
             data = owm.get_current(args[1], **self.settings)
             temp, tmin, tmax = data('main.temp', 'main.temp_min', 'main.temp_max')
-            form = "Weather for {}, {}:\n".format(data['name'], data['sys']['country'])
+            form = "<b>Weather for {}, {}:</b>\n".format(data['name'], data['sys']['country'])
             form += " - {}\n".format(data['weather'][0]['description'].capitalize())
-            form += " - Cur {:.1f}°C / High {:.1f}°C / Low {:.1f}°C\n".format(temp, tmin, tmax)
+            form += " - Current {:.1f}°C / High {:.1f}°C / Low {:.1f}°C\n".format(temp, tmin, tmax)
             form += " - Wind: {} km/h {}".format(data['wind']['speed'], self.card(data['wind']['deg']))
             if 'gust' in data['wind']:
                 form += " (Gust: {} km/h)".format(data['wind']['gust'])
             bot.send_message(chat_id = update.message.chat_id,
+                             parse_mode = ParseMode.HTML,
                              text = form,
                              disable_notification = True)
             self.logger.info("Command /weather executed successfully.")
-        #except urllib.error.HTTPError:
-        #    bot.send_message(chat_id = update.message.chat_id,
-        #                     text = "The location you chose seems to be invalid.",
-        #                     disable_notification = True)
+        except urllib.error.HTTPError:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "The location you chose seems to be invalid.",
+                             disable_notification = True)
         except Exception as e:
             raise e
             print(e)
