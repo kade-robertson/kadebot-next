@@ -47,7 +47,7 @@ class Weather(CommandBase):
             temp, tmin, tmax = data('main.temp', 'main.temp_min', 'main.temp_max')
             form = "<b>Weather for {}, {}:</b>\n".format(data['name'], data['sys']['country'])
             form += " - {}\n".format(data['weather'][0]['description'].capitalize())
-            form += " - Current {:.1f}°C / High {:.1f}°C / Low {:.1f}°C\n".format(temp, tmin, tmax)
+            form += " - Current {:.1f}°C / High {:.1f}°C / Low {:.1f}°C\n".format(temp, tmax, tmin)
             form += " - Wind: {:.1f} km/h".format(data['wind']['speed'])
             if 'deg' in data['wind']:
                 form += " {}".format(self.card(data['wind']['deg']))
