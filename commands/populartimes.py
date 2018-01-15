@@ -23,7 +23,7 @@ class PopularTimes(CommandBase):
         ]
     def load_config(self, confdict):
         self.apikey = confdict["api_key"]
-    def get_help(self, cmd):
+    def get_help_msg(self, cmd):
         return "Call /popular \"<place>\" to see the busy times for that place."
     def execute(self, bot, update):
         try:
