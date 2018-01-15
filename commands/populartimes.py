@@ -24,7 +24,7 @@ class PopularTimes(CommandBase):
     def load_config(self, confdict):
         self.apikey = confdict["api_key"]
     def get_help(self, cmd):
-        return "Call /popular <lat>,<lng> to see the busy times for that place."
+        return "Call /popular \"<place>\" to see the busy times for that place."
     def execute(self, bot, update):
         try:
             args = shlex.split(update.message.text)
