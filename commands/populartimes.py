@@ -60,6 +60,10 @@ class PopularTimes(CommandBase):
                             tstr = "{}{}m-".format(12 if start[1] == 0 else start[1], 'p' if start[0] == 1 else 'a') + tstr
                         busy.append(tstr)
                 out += "{}\n".format(', '.join(busy) if len(busy) > 0 else "None")
+            if 'current_popularity' in poptimes.keys():
+                cur = poptimes['current_popularity']
+                is_busy = 'Not busy' if cur < 50 else 'Busy'
+                out += "\nCurrent busyness: {} ({}%)".format(is_busy, cur)
             bot.send_message(chat_id = update.message.chat_id,
                              text = out,
                              disable_notification = True)
