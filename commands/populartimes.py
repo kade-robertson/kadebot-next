@@ -41,9 +41,11 @@ class PopularTimes(CommandBase):
                                  text = "Unfortunately, I got no results for the place you searched.",
                                  disable_notification = True)
                 return
-            place_id = results[0]["place_id"]
+            place_id = place_info[0]["place_id"]
             poptimes = populartimes.get_id(self.apikey, place_id)
             out = "Busy times for {}:\n".format(poptimes['name'])
+            if len(poptimes['populartimes']) == 0:
+                out += " - Unavailable!\n"
             for day in poptimes['populartimes']:
                 out += " - {}: ".format(day['name'])
                 # Order so the busy time list is from 6am to 5am
@@ -52,9 +54,10 @@ class PopularTimes(CommandBase):
                 for k, v in groupby(enumerate(data), key = lambda x: x[1]):
                     if k:
                         v = list(v)
-                        start, end = divmod(v[0][0] + 6, 12), divmod(v[-1][0] + 6)
-                        tstr = "{}{}m-".format(start[1], 'p' if start[0] == 1 else 'a')
-                        tstr += "{}{}m".format(end[1], 'p' if end[0] == 1 else 'a')
+                        start, end = divmod(v[0][0] + 6, 12), divmod(v[-1][0] + 6, 12)
+                        tstr = "{}{}m".format(12 if end[1] == 0 else end[1], 'p' if end[0] == 1 else 'a')
+                        if start != end:
+                            tstr = "{}{}m-".format(12 if start[1] == 0 else start[1], 'p' if start[0] == 1 else 'a') + tstr
                         busy.append(tstr)
                 out += "{}\n".format(', '.join(busy) if len(busy) > 0 else "None")
             bot.send_message(chat_id = update.message.chat_id,
