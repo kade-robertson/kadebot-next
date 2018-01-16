@@ -8,6 +8,7 @@
 #   folder: "markov data folder"
 
 import os
+import json
 import markovify
 from .basic import *
 
@@ -28,10 +29,11 @@ class Markov(CommandBase):
         self.datfolder = confdict['folder']
         if os.path.exists(self.datfolder):
             for file in os.listdir(self.datfolder):
-                with open(os.path.join(self.datfolder, file), 'r') as f:
+                with open(os.path.join(self.datfolder, file), 'r', newline='\n') as f:
                     udata = f.read()
                     user = file.split('.json')[0]
-                    data = markovify.Text.from_json(udata)
+                    ujson = json.loads(udata)
+                    data = markovify.Text.from_dict(ujson)
                     self.users[user] = data
     def on_exit(self):
         self.logger.info("  Saving collected Markov data..")
@@ -39,7 +41,7 @@ class Markov(CommandBase):
             os.makedirs(self.datfolder)
         for user in self.users:
             udata = self.users[user].to_json()
-            with open(os.path.join(self.datfolder, '{}.json'.format(user)), 'w') as f:
+            with open(os.path.join(self.datfolder, '{}.json'.format(user)), 'w', newline='\n') as f:
                 f.write(udata)
         self.logger.info("  Done saving.")
     def execute_generate(self, bot, update):
@@ -63,9 +65,9 @@ class Markov(CommandBase):
         try:
             user = 'markov_model'
             intext = update.message.text
-            if intext[-1] not in ".!?":
-                intext += "."
-            new = markovify.Text(update.message.text, state_size = 3)
+            if intext[-1] not in '.!?':
+                intext += '.'
+            new = markovify.Text(intext, state_size = 3)
             self.logger.info("  Adding to a Markov model..")
             if user not in self.users:
                 self.users[user] = new
