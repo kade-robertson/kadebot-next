@@ -70,4 +70,3 @@ class PopularTimes(CommandBase):
             self.logger.info("Command /popular executed successfully.")
         except Exception as e:
             self.logger.error(e)
-    

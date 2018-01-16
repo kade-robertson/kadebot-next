@@ -44,10 +44,13 @@ class Markov(CommandBase):
         self.logger.info("  Done saving.")
     def execute_generate(self, bot, update):
         try:
-            user = str(update.message.from_user.id)
+            user = 'markov_model'
             if user in self.users:
+                out = None
+                while out == None:
+                    out = self.users[user].make_sentence()
                 bot.send_message(chat_id = update.message.chat_id,
-                                 text = self.users[user].make_sentence(test_output = False),
+                                 text = out,
                                  disable_notification = True)
             else:
                 bot.send_message(chat_id = update.message.chat_id,
@@ -58,11 +61,11 @@ class Markov(CommandBase):
             self.logger.error(e)
     def monitor_modeling(self, bot, update):
         try:
-            user = str(update.message.from_user.id)
+            user = 'markov_model'
             intext = update.message.text
             if intext[-1] not in ".!?":
                 intext += "."
-            new = markovify.Text(update.message.text, state_size = 1)
+            new = markovify.Text(update.message.text, state_size = 3)
             self.logger.info("  Adding to a Markov model..")
             if user not in self.users:
                 self.users[user] = new
