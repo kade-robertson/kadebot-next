@@ -11,3 +11,21 @@ from .translate import Translate
 from .weather import Weather
 from .wikipedia import Wikipedia
 from .wolfram import Wolfram
+
+__all__ = [
+    'CommandBase',
+    'CommandInfo',
+    'CommandType',
+    'Cat',
+    'Dog',
+    'EightBall',
+    'Markov',
+    'Movie',
+    'PopularTimes',
+    'RandomAww',
+    'SonnetGen',
+    'Translate',
+    'Weather',
+    'Wikipedia',
+    'Wolfram'
+]
