@@ -30,15 +30,16 @@ class Dog(CommandBase):
         try:
             args = shlex.split(update.message.text)
             if len(args) == 1:
-                data = requests.get("https://dog.ceo/api/breeds/image/random").json()
+                urlfmt = "https://dog.ceo/api/breeds/image/random"
             elif len(args) == 2:
                 name = self.dogify(args[1].lower().split(' ')[::-1])
-                urlfmt = "https://dog.ceo/api/breed/{0}/images/random"
-                data = requests.get(urlfmt.format(name)).json()
+                urlfmt = "https://dog.ceo/api/breed/{0}/images/random".format(name)
             else:
                 name = self.dogify([x.lower() for x in args[1:]])
-                urlfmt = "https://dog.ceo/api/breed/{0}/images/random"
-                data = requests.get(urlfmt.format(name)).json()
+                urlfmt = "https://dog.ceo/api/breed/{0}/images/random".format(name)
+            self.logger.info(urlfmt)
+            data = requests.get(urlfmt).json()
+            self.logger.info(data['message'])
             bot.send_photo(chat_id = update.message.chat_id, 
                            photo = data["message"],
                            disable_notification = True)
