@@ -4,8 +4,10 @@ import os
 import sys
 import shlex
 import argparse
+import importlib
 
-from commands import *
+import commands as _commands
+from commands import CommandBase, CommandType, CommandInfo
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
@@ -16,18 +18,7 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 baseconf = dict()
-commands = [ Cat(logging),
-             Dog(logging),
-             EightBall(logging),
-             Wolfram(logging),
-             Movie(logging),
-             Wikipedia(logging),
-             Translate(logging),
-             RandomAww(logging),
-             Markov(logging),
-             SonnetGen(logging),
-             Weather(logging),
-             PopularTimes(logging) ]
+commands = []
 regdhelp = dict()
 
 def kill(bot, update):
@@ -84,6 +75,7 @@ def error_handler(bot, update, error):
 
 def main():
     global regdhelp
+    global commands
     updater = Updater(token = baseconf["api_key"])
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("help", help))
@@ -91,6 +83,10 @@ def main():
     dispatcher.add_handler(CommandHandler("update", update))
     dispatcher.add_handler(CommandHandler("kill", kill))
     to_schedule = []
+    for command in _commands.__all__:
+        if 'Command' not in command:
+            mod = importlib.import_module('commands')
+            commands.append(getattr(mod, command)(logging))
     for cmd in commands:
         for ci in cmd.to_register:
             if ci.name in baseconf["disabled"]:
