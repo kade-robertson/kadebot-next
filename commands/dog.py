@@ -4,6 +4,7 @@
 # Configuration: None
 
 import shlex
+import string
 import requests
 from .basic import *
 
@@ -47,9 +48,20 @@ class Dog(CommandBase):
             self.logger.info(urlfmt)
             data = requests.get(urlfmt).json()
             self.logger.info(data['message'])
-            bot.send_photo(chat_id = update.message.chat_id, 
-                           photo = data["message"],
-                           disable_notification = True)
+            if len(args) == 1:
+                breed = data['message'].split('img/')[1].split('/')[0].replace('-', ' ')
+                if breed == "germanshepherd":
+                    breed = "German Shepherd"
+                else:
+                    breed = string.capwords(breed)
+                bot.send_photo(chat_id = update.message.chat_id, 
+                               photo = data["message"],
+                               caption = breed,
+                               disable_notification = True)
+            else:
+                bot.send_photo(chat_id = update.message.chat_id, 
+                               photo = data["message"],
+                               disable_notification = True)
             self.logger.info("/dog executed successfully.")
         except Exception as e:
             self.logger.exception(e)
