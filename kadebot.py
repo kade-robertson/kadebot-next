@@ -111,13 +111,15 @@ def main():
                 else:
                     logging.info("Registered command /{}".format(ci.name))
             elif ci.type == CommandType.Schedule:
-                to_shedule.append(ci)
+                to_schedule.append(ci)
             else:
                 dispatcher.add_handler(MessageHandler(ci.filter, ci.func))
                 logging.info("Registered monitor {}".format(ci.name))
     dispatcher.add_error_handler(error_handler)
     updater.start_polling()
-    logging.ingo("Started polling for commands.")
+    logging.info("Started polling for commands.")
+    if len(to_schedule) > 0:
+        logging.info("Registering scheduled tasks..")
     for ci in to_schedule:
         ci.func(updater)
         logging.info("Registered scheduled task {}".format(ci.name))

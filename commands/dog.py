@@ -12,6 +12,7 @@ class Dog(CommandBase):
     safename = "dog"
     def __init__(self, logger):
         super().__init__(logger)
+        self.breed_list = []
         self.to_register = [
             CommandInfo("dog", self.execute, "Displays a random dog image."),
             CommandInfo("dogsearch", self.execute_list, "Search for dog breeds."),
@@ -56,15 +57,18 @@ class Dog(CommandBase):
         self.update_breeds()
         updater.job_queue.run_daily(self.update_breeds, None)
     def update_breeds(self):
-        self.breed_list = []
+        temp_list = []
         base_breeds = requests.get('https://dog.ceo/api/breeds/list').json()
         for breed in base_breeds['message']:
+            self.logger.info(" - Getting sub-breeds of {}...".format(breed))
             sub_breeds = requests.get('https://dog.ceo/api/breed/{0}/list'.format(breed)).json()
             if len(sub_breeds['message']) == 0:
-                self.breed_list.append(breed)
+                temp_list.append(breed)
             else:
                 for sub in sub_breeds['message']:
-                    self.breed_list.append(' '.join([breed, sub]))
+                    temp_list.append(' '.join([sub, breed]))
+            self.logger.info(" - {} collection done.".format(breed))
+        self.breed_list = temp_list
         self.logger.info("Scheduled task dogbreeds completed.")
     def execute_list(self, bot, update):
         try:
@@ -80,7 +84,7 @@ class Dog(CommandBase):
                                  text = "This doesn't seem like correct usage of /dogsearch.",
                                  disable_notification = True)
                 return
-            out += "Search results: "
+            out = "Search results: "
             res = sorted([x for x in self.breed_list if args[1].lower() in x.lower()])
             if len(res) == 0:
                 out += "None!"
