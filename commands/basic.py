@@ -4,9 +4,11 @@ from telegram.ext import Filters
 class CommandType(Enum):
     Default = 0
     Monitor = 1
+    Schedule = 2
 
 class CommandInfo:
-    def __init__(self, name, func, shorthelp, _type=CommandType.Default, alias=None, filter=Filters.text):
+    def __init__(self, name, func, shorthelp, _type=CommandType.Default, 
+                 alias=None, filter=Filters.text):
         self.name = name
         self.func = func
         self.helpmsg = shorthelp
