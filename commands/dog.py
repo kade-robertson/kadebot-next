@@ -50,6 +50,7 @@ class Dog(CommandBase):
             self.logger.info(data['message'])
             if len(args) == 1:
                 breed = data['message'].split('img/')[1].split('/')[0].replace('-', ' ')
+                breed = ' '.join(breed.split(' ')[::-1])
                 if breed == "germanshepherd":
                     breed = "German Shepherd"
                 else:
