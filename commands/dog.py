@@ -3,6 +3,7 @@
 #   - /dog
 # Configuration: None
 
+import shlex
 import requests
 from .basic import *
 
@@ -23,9 +24,13 @@ class Dog(CommandBase):
             if len(args) == 1:
                 data = requests.get("https://dog.ceo/api/breeds/image/random").json()
             elif len(args) == 2:
-                name = args[1].lower().split(' ')[::-1].join('/')
+                name = '/'.join(args[1].lower().split(' ')[::-1])
                 urlfmt = "https://dog.ceo/api/breed/{0}/images/random"
-                data = requests.gete(urlfmt.format(name))).json()
+                data = requests.get(urlfmt.format(name)).json()
+            else:
+                name = '/'.join([x.lower() for x in args[1:]][::-1])
+                urlfmt = "https://dog.ceo/api/breed/{0}/images/random"
+                data = requests.get(urlfmt.format(name)).json()
             bot.send_photo(chat_id = update.message.chat_id, 
                            photo = data["message"],
                            disable_notification = True)
