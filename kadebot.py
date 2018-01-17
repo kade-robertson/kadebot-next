@@ -67,7 +67,7 @@ def help(bot, update):
         out = ""
         for cmd in commands:
             for ci in cmd.to_register:
-                if not ci.name in baseconf["disabled"] and not ci.type == CommandType.Monitor:
+                if not ci.name in baseconf["disabled"] and ci.type == CommandType.Default:
                     if ci.alias != None:
                         out += "/{}, /{} - {}\n".format(ci.name, ci.alias, ci.helpmsg)
                     else:
@@ -90,6 +90,7 @@ def main():
     dispatcher.add_handler(CommandHandler("reload", reload))
     dispatcher.add_handler(CommandHandler("update", update))
     dispatcher.add_handler(CommandHandler("kill", kill))
+    to_schedule = []
     for cmd in commands:
         for ci in cmd.to_register:
             if ci.name in baseconf["disabled"]:
@@ -98,6 +99,8 @@ def main():
             if ci.name in baseconf["disabled_monitors"]:
                 logging.info("Disabled monitor {}".format(ci.name))
                 continue
+            if ci.name in baseconf["disabled_schedules"]:
+                logging.info("Disabled scheduled task {}".format(ci.name))
             if ci.type == CommandType.Default:
                 dispatcher.add_handler(CommandHandler(ci.name, ci.func))
                 regdhelp[ci.name] = cmd
@@ -107,11 +110,17 @@ def main():
                     logging.info("Registered command /{}, /{}".format(ci.name, ci.alias))
                 else:
                     logging.info("Registered command /{}".format(ci.name))
+            elif ci.type == CommandType.Schedule:
+                to_shedule.append(ci)
             else:
                 dispatcher.add_handler(MessageHandler(ci.filter, ci.func))
                 logging.info("Registered monitor {}".format(ci.name))
     dispatcher.add_error_handler(error_handler)
     updater.start_polling()
+    logging.ingo("Started polling for commands.")
+    for ci in to_schedule:
+        ci.func(updater)
+        logging.info("Registered scheduled task {}".format(ci.name))
 
 def load_config(filename):
     global baseconf
