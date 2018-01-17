@@ -83,10 +83,6 @@ def main():
     dispatcher.add_handler(CommandHandler("update", update))
     dispatcher.add_handler(CommandHandler("kill", kill))
     to_schedule = []
-    for command in _commands.__all__:
-        if 'Command' not in command:
-            mod = importlib.import_module('commands')
-            commands.append(getattr(mod, command)(logging))
     for cmd in commands:
         for ci in cmd.to_register:
             if ci.name in baseconf["disabled"]:
@@ -123,14 +119,23 @@ def main():
 def load_config(filename):
     global baseconf
     global translator
+    global commands
     conf = dict()
     with open(filename, 'r') as f:
         conf = yaml.load(f)
     baseconf = conf["base"]
+    logging.info("Loaded base configuration.")
+    for command in _commands.__all__:
+        if 'Command' not in command and command not in baseconf['disabled_modules']:
+            mod = importlib.import_module('commands')
+            commands.append(getattr(mod, command)(logging))
+        elif command in baseconf['disabled_modules']:
+            logging.info("Disabled module {}.".format(command))
     for cmd in commands:
         section = "command.{}".format(cmd.safename)
         if section in conf.keys():
             cmd.load_config(conf[section])
+    logging.info("Loaded module configurations.")
         
 if __name__ == "__main__":
     parser  = argparse.ArgumentParser()
@@ -138,7 +143,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if os.path.exists(args.config):
         load_config(args.config)
-        logging.info("Loaded configuration.")
         main()
     else:
         logging.error("No config file found.")
