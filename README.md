@@ -5,7 +5,7 @@ A Telegram chat bot, built in Python.
 # Configuration
 
 The base set of configuration requires you to specify your Telegram bot token, any administrators (people you want to have access to /reload, /update, /kill), and you may disable any command, monitor, scheduled task, or even entire module you don't want to use. For example, your base section may look like this:
-```
+```yaml
 base:
   api_key: "notarealkey"
   admins:
