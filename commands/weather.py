@@ -6,11 +6,36 @@
 # command.weather:
 #   api_key: "OWM API Key"
 
+import emoji
 import shlex
 import urllib
 import openweathermapy.core as owm
 from telegram import ParseMode
 from .basic import *
+
+def emojify(wid):
+    # Lightning
+    if wid >= 200 and wid <= 232:
+        return ':umbrella: :zap:'
+    # Drizzle and rain
+    elif (wid >= 300 and wid <= 321) or (wid >= 500 and wid <= 531):
+        return ':umbrella:'
+    # Snow
+    elif wid >= 600 and wid <= 622:
+        return ':snowflake:'
+    # Atmospheric Conditions
+    elif wid >= 701 and wid <= 781: 
+        return ':foggy:'
+    # Clear
+    elif wid == 800:
+        return ':sunny:'
+    # Clouds
+    elif wid >= 801 and wid <= 804:
+        return ':cloud:'
+    # Extreme
+    elif wid >= 900 and wid <= 902:
+        return ':cyclone:'
+    
 
 class Weather(CommandBase):
     name = "Weather"
@@ -46,7 +71,8 @@ class Weather(CommandBase):
             data = owm.get_current(args[1], **self.settings)
             temp, tmin, tmax = data('main.temp', 'main.temp_min', 'main.temp_max')
             form = "<b>Weather for {}, {}:</b>\n".format(data['name'], data['sys']['country'])
-            form += " - {}\n".format(data['weather'][0]['description'].capitalize())
+            form += " - {} {}\n".format(data['weather'][0]['description'].capitalize(),
+                                        emoji.emojize(emojify(data['weather'][0]['id']), use_aliases = True))
             form += " - Current {:.1f}°C / High {:.1f}°C / Low {:.1f}°C\n".format(temp, tmax, tmin)
             form += " - Wind: {:.1f} km/h".format(data['wind']['speed'])
             if 'deg' in data['wind']:
