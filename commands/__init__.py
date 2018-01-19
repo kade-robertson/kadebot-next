@@ -2,6 +2,7 @@ from .basic import CommandBase, CommandInfo, CommandType
 from .cat import Cat
 from .dog import Dog
 from .eightball import EightBall
+from .grt import GRT
 from .markov import Markov
 from .movie import Movie
 from .populartimes import PopularTimes
@@ -19,6 +20,7 @@ __all__ = [
     'Cat',
     'Dog',
     'EightBall',
+    'GRT',
     'Markov',
     'Movie',
     'PopularTimes',
