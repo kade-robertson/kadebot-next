@@ -8,6 +8,12 @@ import string
 import requests
 from .basic import *
 
+_doggos = {
+    'germanshepherd': 'German Shepherd',
+    'stbernard': 'St. Bernard',
+    'mexicanhairless': 'Mexican Hairless'
+}
+
 class Dog(CommandBase):
     name = "Dog"
     safename = "dog"
@@ -51,8 +57,8 @@ class Dog(CommandBase):
             if len(args) == 1:
                 breed = data['message'].split('img/')[1].split('/')[0].replace('-', ' ')
                 breed = ' '.join(breed.split(' ')[::-1])
-                if breed == "germanshepherd":
-                    breed = "German Shepherd"
+                if breed in _doggos.keys():
+                    breed = _doggos[breed]
                 else:
                     breed = string.capwords(breed)
                 bot.send_photo(chat_id = update.message.chat_id, 
