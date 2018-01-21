@@ -11,7 +11,8 @@ from .basic import *
 _doggos = {
     'germanshepherd': 'German Shepherd',
     'stbernard': 'St. Bernard',
-    'mexicanhairless': 'Mexican Hairless'
+    'mexicanhairless': 'Mexican Hairless',
+    'shihtzu': 'Shih Tzu'
 }
 
 class Dog(CommandBase):
@@ -77,16 +78,17 @@ class Dog(CommandBase):
         updater.job_queue.run_daily(self.update_breeds, None)
     def update_breeds(self):
         temp_list = []
-        base_breeds = requests.get('https://dog.ceo/api/breeds/list').json()
-        for breed in base_breeds['message']:
-            self.logger.info(" - Getting sub-breeds of {}...".format(breed))
-            sub_breeds = requests.get('https://dog.ceo/api/breed/{0}/list'.format(breed)).json()
-            if len(sub_breeds['message']) == 0:
-                temp_list.append(breed)
-            else:
-                for sub in sub_breeds['message']:
-                    temp_list.append(' '.join([sub, breed]))
-            self.logger.info(" - {} collection done.".format(breed))
+        with requests.Session() as breed_sess:
+            base_breeds = breed_sess.get('https://dog.ceo/api/breeds/list').json()
+            for breed in base_breeds['message']:
+                self.logger.info(" - Getting sub-breeds of {}...".format(breed))
+                sub_breeds = breed_sess.get('https://dog.ceo/api/breed/{0}/list'.format(breed)).json()
+                if len(sub_breeds['message']) == 0:
+                    temp_list.append(breed)
+                else:
+                    for sub in sub_breeds['message']:
+                        temp_list.append(' '.join([sub, breed]))
+                self.logger.info(" - {} collection done.".format(breed))
         self.breed_list = temp_list
         self.logger.info("Scheduled task dogbreeds completed.")
     def execute_list(self, bot, update):

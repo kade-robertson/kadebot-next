@@ -36,7 +36,7 @@ class GRT(CommandBase):
                 return
             times = sorted(set(times), key=lambda x: x[1])
             output = "Times for the {} at stop {}: ".format(args[2], args[1])
-            output += ", ".join(str(x[1]) + ' minutes' for x in times)
+            output += ", ".join(str(x[1]) + ' minute(s)' for x in times)
             bot.send_message(chat_id = update.message.chat_id,
                              text = output,
                              disable_notification = True)
