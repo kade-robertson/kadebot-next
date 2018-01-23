@@ -10,6 +10,7 @@ import os
 import glob
 import datetime
 import feedparser
+from telegram import ParseMode
 from .basic import *
 
 class RSS(CommandBase):
@@ -31,19 +32,29 @@ class RSS(CommandBase):
                 with open(fn, 'r') as f:
                     toreg = [x.strip().split('\t') for x in f.readlines()]
                     self.feeddict[shortfn] = []
-                    for feedurl, interval in toreg:
-                        self.feeddict[shortfn].append((feedurl, int(interval)))
+                    for feedurl, interval, lastid in toreg:
+                        self.feeddict[shortfn].append((feedurl, int(interval), lastid))
     def setup_rss(self, updater):
         for chatid in self.feeddict.keys():
-            for url, intsec in self.feeddict[chatid]:
+            for url, intsec, last in self.feeddict[chatid]:
                 updater.job_queue.run_repeating(
                     check_rss, 
                     interval=datetime.timedelta(seconds=intsec),
-                    context=(chatid, url)
+                    context=(chatid, (url, intsec, last))
                 )
     def check_rss(self, bot, job):
-        chat_id, feedurl = job.context
+        chat_id, meta = job.context
+        feedurl, interval, last_id = meta
         try:
-            feed = feedparser.parse(feedurl):
+            feed = feedparser.parse(feedurl)
+            if len(feed['entries']) > 0:
+                recent = feed['entries'][0]
+                if recent['id'] != last_id:
+                    out = 'Feed Update: <a href="{}">{}</a>'.format(recent['link'], recent['description'])
+                    bot.send_photo(chat_id = chat_id 
+                                   parse_mode = ParseMode.HTML,
+                                   text = out,
+                                   disable_notification = False)
+                    self.feeddict[chat_id] = (feedurl, interval, recent['id'])
         except:
             pass
