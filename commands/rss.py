@@ -122,6 +122,9 @@ class RSS(CommandBase):
                     interval=datetime.timedelta(seconds=interval),
                     context=(update.message.chat_id, (args[1], interval, curid))
                 )
+                bot.send_message(chat_id = update.message.chat_id,
+                                 text = "Your RSS feed has been registered.",
+                                 disable_notification = True)
             self.logger.info("Command /rss executed successfully.")
         except Exception as e:
             raise(e)
