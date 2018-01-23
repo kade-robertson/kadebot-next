@@ -93,6 +93,7 @@ def main():
                 continue
             if ci.name in baseconf["disabled_schedules"]:
                 logging.info("Disabled scheduled task {}".format(ci.name))
+                continue
             if ci.type == CommandType.Default:
                 dispatcher.add_handler(CommandHandler(ci.name, ci.func))
                 regdhelp[ci.name] = cmd

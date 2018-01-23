@@ -6,6 +6,7 @@ from .markov import Markov
 from .movie import Movie
 from .populartimes import PopularTimes
 from .randomaww import RandomAww
+from .rss import RSS
 from .sonnetgen import SonnetGen
 from .translate import Translate
 from .weather import Weather
@@ -23,6 +24,7 @@ __all__ = [
     'Movie',
     'PopularTimes',
     'RandomAww',
+    'RSS',
     'SonnetGen',
     'Translate',
     'Weather',

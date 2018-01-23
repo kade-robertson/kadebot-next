@@ -3,4 +3,5 @@
 !default.conf
 *.db
 markov_data/*
+rss_data/*
 .vscode/*
