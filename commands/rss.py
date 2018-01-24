@@ -41,7 +41,8 @@ class RSS(CommandBase):
         self.feeddict = dict()
     def get_help_msg(self, cmd):
         if cmd == "rss":
-            return "Register an RSS feed with /rss <url> <interval>. Valid intervals are {}.".format(', '.join(self.int_opts.keys()))
+            ints = sorted(self.int_opts.items(), key=lambda x: x[1])
+            return "Register an RSS feed with /rss <url> <interval>. Valid intervals are {}.".format(', '.join(x[0] for x in ints))
         elif cmd == "rssfeeds":
             return "Call /rssfeeds with no arguments to see which feeds are registered to this chat."
         elif cmd == "rssdel":
