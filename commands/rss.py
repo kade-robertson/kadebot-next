@@ -127,7 +127,7 @@ class RSS(CommandBase):
                                  text = "This doesn't seem to be a valid interval.",
                                  disable_notification = True)
                 return
-            interval = int_opts(args[2])
+            interval = self.int_opts(args[2])
             curid = feedparser.parse(args[1])['entries'][0]['id']
             if update.message.chat_id in self.feeddict.keys():
                 tryx = self.feeddict[update.message.chat_id]
@@ -158,7 +158,7 @@ class RSS(CommandBase):
                     return
                 out = "*Your RSS feeds:*"
                 for idx, item in enumerate(self.feeddict[chatid]):
-                    out += '\n{}: {} ({})'.format(idx, item[0], int_opts_r[item[1]])
+                    out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[1]])
                 bot.send_message(chat_id = chat_id,
                                  parse_mode = ParseMode.MARKDOWN,
                                  text = out,
@@ -192,7 +192,7 @@ class RSS(CommandBase):
                     if len(self.feeddict[chatid]) > 0:
                         out += "\n\n*Remaining RSS feeds:*"
                         for idx, item in enumerate(self.feeddict[chatid]):
-                            out += '\n{}: {} ({})'.format(idx, item[0], int_opts_r[item[1]])
+                            out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[1]])
                     else:
                         out += " You have no feeds remaining."
                     bot.send_message(chat_id = chat_id,
