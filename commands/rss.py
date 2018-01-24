@@ -40,7 +40,12 @@ class RSS(CommandBase):
         ]
         self.feeddict = dict()
     def get_help_msg(self, cmd):
-        return "Register an RSS feed with /rss <url> <interval>. Valid intervals are {}.".format(', '.join(int_opts.keys()))
+        if cmd == "rss":
+            return "Register an RSS feed with /rss <url> <interval>. Valid intervals are {}.".format(', '.join(self.int_opts.keys()))
+        elif cmd == "rssfeeds":
+            return "Call /rssfeeds with no arguments to see which feeds are registered to this chat."
+        elif cmd == "rssdel":
+            return "Call /rssdel <index> to delete the feed at the specified index (from /rssfeeds)."
     def load_config(self, confdict):
         self.datadir = confdict['data_dir']
         self.feeddict = dict()
@@ -59,7 +64,8 @@ class RSS(CommandBase):
             os.mkdir(self.datadir)
         for chat_id in self.feeddict.keys():
             with open(os.path.join(self.datadir, str(chat_id) + '.groupfeeds'), 'w') as f:
-                print(self.feeddict[chat_id])
+                if len(self.feeddict[chat_id]) > 0:
+                    self.logger.info('  Saving feeds for {}'.format(chat_id))
                 f.write('\n'.join('||'.join(map(str, x)) for x in self.feeddict[chat_id]))
     def setup_rss(self, updater):
         stagger = 0
@@ -122,12 +128,12 @@ class RSS(CommandBase):
                                  text = "This doesn't seem to be a valid link.",
                                  disable_notification = True)
                 return
-            if args[2] not in int_opts.keys():
+            if args[2] not in self.int_opts.keys():
                 bot.send_message(chat_id = update.message.chat_id,
                                  text = "This doesn't seem to be a valid interval.",
                                  disable_notification = True)
                 return
-            interval = self.int_opts(args[2])
+            interval = self.int_opts[args[2]]
             curid = feedparser.parse(args[1])['entries'][0]['id']
             if update.message.chat_id in self.feeddict.keys():
                 tryx = self.feeddict[update.message.chat_id]
@@ -159,7 +165,7 @@ class RSS(CommandBase):
                 out = "*Your RSS feeds:*"
                 for idx, item in enumerate(self.feeddict[chatid]):
                     out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[1]])
-                bot.send_message(chat_id = chat_id,
+                bot.send_message(chat_id = chatid,
                                  parse_mode = ParseMode.MARKDOWN,
                                  text = out,
                                  disable_notification = False)
@@ -185,9 +191,8 @@ class RSS(CommandBase):
                                     text = "You don't have any feeds registered.",
                                     disable_notification = True)
                     return
-                if args[2].isdigit() and 0 <= int(args[2]) < len(self.feeddict[chatid]):
-                    self.feeddict[chatid].pop(int(args[2]))
-
+                if args[1].isdigit() and 0 <= int(args[1]) < len(self.feeddict[chatid]):
+                    self.feeddict[chatid].pop(int(args[1]))
                     out = "Feed deleted successfully."
                     if len(self.feeddict[chatid]) > 0:
                         out += "\n\n*Remaining RSS feeds:*"
@@ -195,7 +200,7 @@ class RSS(CommandBase):
                             out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[1]])
                     else:
                         out += " You have no feeds remaining."
-                    bot.send_message(chat_id = chat_id,
+                    bot.send_message(chat_id = chatid,
                                      parse_mode = ParseMode.MARKDOWN,
                                      text = out,
                                      disable_notification = False)
@@ -208,6 +213,6 @@ class RSS(CommandBase):
                 bot.send_message(chat_id = chatid,
                                  text = "You don't have any feeds registered.",
                                  disable_notification = True)
-            self.logger.info("Command /rssfeeds executed successfully.")
+            self.logger.info("Command /rssdel executed successfully.")
         except Exception as e:
             self.logger.error(e)
