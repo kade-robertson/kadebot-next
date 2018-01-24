@@ -23,13 +23,13 @@ class RSS(CommandBase):
     name = "RSS"
     safename = "rss"
     int_opts = {
-        '2m': 120
-        '5m': 300
-        '15m': 900
-        '1h': 3600
+        '2m': 120,
+        '5m': 300,
+        '15m': 900,
+        '1h': 3600,
         '3h': 10800
     }
-    int_opts_r = dict((v, k) for k, v in int_opts)
+    int_opts_r = dict((v, k) for k, v in int_opts.items())
     def __init__(self, logger):
         super().__init__(logger)
         self.to_register = [
@@ -91,7 +91,7 @@ class RSS(CommandBase):
                         break
                     recent = feed['entries'][startidx]
                     if recent['id'] != last_id:
-                        outup.append('*\n[{}]({})'.format(recent['title'], recent['link']))
+                        outup.append('\n[{}]({})'.format(recent['title'], recent['link']))
                         startidx += 1
                     else:
                         break
@@ -105,7 +105,7 @@ class RSS(CommandBase):
                     if lst[i][0] == feedurl:
                         lst[i] = (feedurl, interval, recentid)
                         break
-                self.feeddict[id] = lst
+                self.feeddict[chat_id] = lst
         except Exception as e:
             raise(e)
     def execute_rss(self, bot, update):
