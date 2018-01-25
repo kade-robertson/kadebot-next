@@ -12,7 +12,8 @@ _doggos = {
     'germanshepherd': 'German Shepherd',
     'stbernard': 'St. Bernard',
     'mexicanhairless': 'Mexican Hairless',
-    'shihtzu': 'Shih Tzu'
+    'shihtzu': 'Shih Tzu',
+    'westhighland terrier': 'West Highland Terrier'
 }
 
 class Dog(CommandBase):
