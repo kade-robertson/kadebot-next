@@ -4,7 +4,9 @@
 #   - /todayreg
 # Monitors: None
 # Schedules: fact_today
-# Configuration: None
+# Configuration:
+# command.dayfact:
+#   datfile: "path/to/datfile.txt"
 
 import os
 import shlex
@@ -21,7 +23,7 @@ class DayFact(CommandBase):
         self.to_register = [
             CommandInfo("today", self.execute, "See facts about today."),
             CommandInfo("todayreg", self.execute_sched, "Schedule daily facts for this chat."),
-            CommandInfo("todaydel", self.execude_del, "Remove scheduled daily facts for this chat."),
+            CommandInfo("todaydel", self.execute_del, "Remove scheduled daily facts for this chat."),
             CommandInfo("fact_today", self.setup_facts, "Show scheduled daily facts", _type=CommandType.Schedule)
         ]
     def get_help_msg():
@@ -32,10 +34,13 @@ class DayFact(CommandBase):
             with open(self.regfile, 'r') as f:
                 lines = [x.strip().split(' ') for x in f.readlines()]
                 for chat, hour in lines:
-                    self.sched_chat[int(chat)] = int(hour)
+                    self.sched_chats[int(chat)] = int(hour)
     def on_exit(self):
-        with open(self.regfile, 'w') as f:
-            f.write('\n'.join(' '.join(map(str, x)) for x in self.sched_chat.items()))
+        if os.path.isfile(self.regfile):
+            os.remove(self.regfile)
+        if self.sched_chats:
+            with open(self.regfile, 'w') as f:
+                f.write('\n'.join(' '.join(map(str, x)) for x in self.sched_chats.items()))
     def send_stats(self, bot, chatid):
         today = datetime.datetime.today()
         ending = 'th'
@@ -55,20 +60,20 @@ class DayFact(CommandBase):
                 output += "\n -{}".format(data.replace(todaystr, ''))
         bot.send_message(
             chat_id = chatid,
-            text = output
-            parse_mode = 'MARKDOWN'
+            text = output,
+            parse_mode = 'MARKDOWN',
             disable_notification = True
         )
     def execute(self, bot, update):
         try:
-            self.send_stats(bot, update.message.chatid)
+            self.send_stats(bot, update.message.chat_id)
             self.logger.info("Command /today executed successfully.")
         except Exception as e:
             self.logger.error(e)
     def setup_facts(self, updater):
         self.temp_upd = updater
         if self.sched_chats is not None:
-            for key, hour in self.sched_chats:
+            for key, hour in self.sched_chats.items():
                 updater.job_queue.run_daily(
                     self.execute_today,
                     time = datetime.time(hour, 0, 0),
@@ -95,7 +100,7 @@ class DayFact(CommandBase):
             self.sched_chats[update.message.chat_id] = int(args[1])
             self.temp_upd.job_queue.run_daily(
                 self.execute_today,
-                time = datetime.time(int(args[1], 0, 0)),
+                time = datetime.time(int(args[1]), 0, 0),
                 context = update.message.chat_id
             )
             bot.send_message(chat_id = update.message.chat_id,
