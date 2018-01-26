@@ -42,7 +42,7 @@ class RSS(CommandBase):
     def get_help_msg(self, cmd):
         if cmd == "rss":
             ints = sorted(self.int_opts.items(), key=lambda x: x[1])
-            return "Register an RSS feed with /rss <url> <interval>. Valid intervals are {}.".format(', '.join(x[0] for x in ints))
+            return "Register an RSS feed with /rss <name> <url> <interval>. Valid intervals are {}.".format(', '.join(x[0] for x in ints))
         elif cmd == "rssfeeds":
             return "Call /rssfeeds with no arguments to see which feeds are registered to this chat."
         elif cmd == "rssdel":
@@ -58,8 +58,8 @@ class RSS(CommandBase):
                 with open(fn, 'r') as f:
                     toreg = (x.strip().split('||') for x in f.readlines())
                     self.feeddict[shortfn] = []
-                    for feedurl, interval, lastid in toreg:
-                        self.feeddict[shortfn].append((feedurl, int(interval), lastid))
+                    for name, feedurl, interval, lastid in toreg:
+                        self.feeddict[shortfn].append((name, feedurl, int(interval), lastid))
     def on_exit(self):
         if not os.path.exists(self.datadir):
             os.mkdir(self.datadir)
@@ -72,18 +72,18 @@ class RSS(CommandBase):
         stagger = 0
         self.temp_upd = updater
         for chatid in self.feeddict.keys():
-            for url, intsec, last in self.feeddict[chatid]:
+            for feed in self.feeddict[chatid]:
                 updater.job_queue.run_repeating(
                     self.check_rss, 
-                    interval=datetime.timedelta(seconds=intsec),
-                    context=(chatid, (url, intsec, last)),
+                    interval=datetime.timedelta(seconds=feed[2]),
+                    context=(chatid, feed),
                     first = stagger
                 )
                 stagger += 5
     def check_rss(self, bot, job):
         chat_id, meta = job.context
         self.logger.info("Checking {}".format(meta[0]))
-        feedurl, interval, last_id = meta
+        name, feedurl, interval, last_id = meta
         try:
             feed = feedparser.parse(feedurl)
             if len(feed['entries']) > 0:
@@ -92,7 +92,7 @@ class RSS(CommandBase):
                 self.logger.info("  Recent ID: {} | Last Saved: {}".format(recentid, last_id))
                 if recentid == last_id:
                     return
-                out = "*Feed Update(s):*"
+                out = "*{} Feed Update(s):*".format(name)
                 outup = []
                 while True:
                     if startidx >= len(feed['entries']):
@@ -112,9 +112,9 @@ class RSS(CommandBase):
                                  disable_web_page_preview = True)
                 lst = self.feeddict[chat_id]
                 for i in range(len(lst)):
-                    if lst[i][0] == feedurl:
+                    if lst[i][1] == feedurl:
                         self.logger.info("Old entry: {}".format(lst[i]))
-                        lst[i] = (feedurl, interval, recentid)
+                        lst[i] = (name, feedurl, interval, recentid)
                         self.logger.info("New entry: {}".format(lst[i]))
                         break
                 self.feeddict[chat_id] = lst
@@ -124,35 +124,35 @@ class RSS(CommandBase):
     def execute_rss(self, bot, update):
         try:
             args = shlex.split(update.message.text)
-            if len(args) != 3:
+            if len(args) != 4:
                 bot.send_message(chat_id = update.message.chat_id,
                                  text = "This doesn't seem like correct usage of /rss.",
                                  disable_notification = True)
                 return
-            attempt = requests.head(args[1])
+            attempt = requests.head(args[2])
             if attempt.status_code not in (200, 429):
                 bot.send_message(chat_id = update.message.chat_id,
                                  text = "This doesn't seem to be a valid link.",
                                  disable_notification = True)
                 return
-            if args[2] not in self.int_opts.keys():
+            if args[3] not in self.int_opts.keys():
                 bot.send_message(chat_id = update.message.chat_id,
                                  text = "This doesn't seem to be a valid interval.",
                                  disable_notification = True)
                 return
-            interval = self.int_opts[args[2]]
-            curid = feedparser.parse(args[1])['entries'][0]['id']
+            interval = self.int_opts[args[3]]
+            curid = feedparser.parse(args[2])['entries'][0]['id']
             if update.message.chat_id in self.feeddict.keys():
                 tryx = self.feeddict[update.message.chat_id]
             else:
                 self.feeddict[update.message.chat_id] = []
                 tryx = []
-            if args[1] not in [x[0] for x in tryx]:
-                self.feeddict[update.message.chat_id].append((args[1], interval, curid))
+            if args[2] not in [x[0] for x in tryx]:
+                self.feeddict[update.message.chat_id].append((args[1], args[2], interval, curid))
                 self.temp_upd.job_queue.run_repeating(
                     self.check_rss,
                     interval=datetime.timedelta(seconds=interval),
-                    context=(update.message.chat_id, (args[1], interval, curid))
+                    context=(update.message.chat_id, (args[1], args[2], interval, curid))
                 )
                 bot.send_message(chat_id = update.message.chat_id,
                                  text = "Your RSS feed has been registered.",
@@ -171,7 +171,7 @@ class RSS(CommandBase):
                     return
                 out = "*Your RSS feeds:*"
                 for idx, item in enumerate(self.feeddict[chatid]):
-                    out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[1]])
+                    out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[2]])
                 bot.send_message(chat_id = chatid,
                                  parse_mode = ParseMode.MARKDOWN,
                                  text = out,
@@ -204,7 +204,7 @@ class RSS(CommandBase):
                     if len(self.feeddict[chatid]) > 0:
                         out += "\n\n*Remaining RSS feeds:*"
                         for idx, item in enumerate(self.feeddict[chatid]):
-                            out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[1]])
+                            out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[2]])
                     else:
                         out += " You have no feeds remaining."
                     bot.send_message(chat_id = chatid,
