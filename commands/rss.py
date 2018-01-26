@@ -118,7 +118,7 @@ class RSS(CommandBase):
                         self.logger.info("New entry: {}".format(lst[i]))
                         break
                 self.feeddict[chat_id] = lst
-                self.logger.info("Updated dictionary: {}".format(self.feeddict[chat_id]))
+                job.context = (chat_id, self.feeddict[chat_id])
         except Exception as e:
             raise(e)
     def execute_rss(self, bot, update):
