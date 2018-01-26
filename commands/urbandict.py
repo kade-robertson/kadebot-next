@@ -21,14 +21,22 @@ class UrbanDictionary(CommandBase):
         try:
             data = requests.get('http://api.urbandictionary.com/v0/random').json()
             choice = data['list'][0]
-            fmt = '<b>Word:</b> {}\n\n{}'
-            defn = choice['description']
-            if len(defn) > 100:
-                defn = defn[:97] + '...'
+            fmt = '<b>Word:</b> <a href="{}">{}</a>\n<b>Definition:</b> {}\n<b>Example:</b> <i>{}</i>'
+            defn = choice['definition']
+            if len(defn) > 300:
+                defn = defn[:297] + '...'
+            example = choice['example']
+            if '\n' in example:
+                example = '\n'+example
             bot.send_message(chat_id = update.message.chat_id,
-                             text = fmt.format(choice['word'], defn),
+                             text = fmt.format(
+                                 choice['permalink'], 
+                                 choice['word'], 
+                                 defn, 
+                                 example),
                              parse_mode = 'HTML',
-                             disable_notification = 'True')
+                             disable_notification = 'True',
+                             disable_web_page_preview = 'True')
             self.logger.info("Command /udrandom executed successfully.")
         except Exception as e:
             self.logger.error(e)
