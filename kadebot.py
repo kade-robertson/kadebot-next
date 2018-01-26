@@ -44,6 +44,16 @@ def update(bot, update):
         os.system("git pull --force")
         reload(bot, update)
 
+def cmdlist(bot, update):
+    out = []
+    for cmd in commands:
+        for ci in cmd.to_register:
+            if not ci.name in baseconf['disabled'] and ci.type == CommandType.Default:
+                out.append('/' + ci.name)
+    bot.send_message(chat_id = update.message.chat_id, 
+                     text = 'Command list:\n' + ', '.join(sorted(out)),
+                     disable_notification = True)
+
 def help(bot, update):
     args = shlex.split(update.message.text)
     if len(args) > 1:
@@ -79,6 +89,7 @@ def main():
     updater = Updater(token = baseconf["api_key"])
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("help", help))
+    dispatcher.add_handler(CommandHandler("list", cmdlist))
     dispatcher.add_handler(CommandHandler("reload", reload))
     dispatcher.add_handler(CommandHandler("update", update))
     dispatcher.add_handler(CommandHandler("kill", kill))
