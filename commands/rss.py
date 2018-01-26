@@ -114,14 +114,16 @@ class RSS(CommandBase):
                                  disable_notification = False,
                                  disable_web_page_preview = True)
                 lst = self.feeddict[chat_id]
+                idx = 0
                 for i in range(len(lst)):
                     if lst[i][1] == feedurl:
                         self.logger.info("Old entry: {}".format(lst[i]))
                         lst[i] = (name, feedurl, interval, recentid)
                         self.logger.info("New entry: {}".format(lst[i]))
+                        idx = i
                         break
                 self.feeddict[chat_id] = lst
-                job.context = (chat_id, self.feeddict[chat_id])
+                job.context = (chat_id, self.feeddict[chat_id][idx])
         except Exception as e:
             raise(e)
     def execute_rss(self, bot, update):
