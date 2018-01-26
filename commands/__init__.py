@@ -1,5 +1,6 @@
 from .basic import CommandBase, CommandInfo, CommandType
 from .cat import Cat
+from .dayfact import DayFact
 from .dog import Dog
 from .eightball import EightBall
 from .grt import GRT
@@ -20,6 +21,7 @@ __all__ = [
     'CommandInfo',
     'CommandType',
     'Cat',
+    'DayFact',
     'Dog',
     'EightBall',
     'GRT',

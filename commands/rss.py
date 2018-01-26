@@ -82,6 +82,9 @@ class RSS(CommandBase):
                 stagger += 5
     def check_rss(self, bot, job):
         chat_id, meta = job.context
+        if chat_id not in self.feeddict.keys() or meta not in self.feeddict[chat_id]:
+            job.schedule_removal()
+            return
         self.logger.info("Checking {}".format(meta[0]))
         name, feedurl, interval, last_id = meta
         try:
