@@ -1,6 +1,9 @@
 # UrbanDictionary plugin
 # Commands:
 #   - /udrandom
+# Monitors: None
+# Schedules: None
+# Configuration: None
 
 import shlex
 import requests
