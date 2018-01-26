@@ -10,6 +10,7 @@ from .randomaww import RandomAww
 from .rss import RSS
 from .sonnetgen import SonnetGen
 from .translate import Translate
+from .urbandict import UrbanDictionary
 from .weather import Weather
 from .wikipedia import Wikipedia
 from .wolfram import Wolfram
@@ -29,6 +30,7 @@ __all__ = [
     'RSS',
     'SonnetGen',
     'Translate',
+    'UrbanDictionary',
     'Weather',
     'Wikipedia',
     'Wolfram'

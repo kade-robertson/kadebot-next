@@ -11,7 +11,9 @@ class UrbanDictionary(CommandBase):
     safename = "urbandictionary"
     def __init__(self, logger):
         super().__init__(logger)
-        self.to_register = []
+        self.to_register = [
+            CommandInfo("udrandom", self.execute, "See a random UrbanDictionary definition.")
+        ]
     def get_help_msg(self, cmd):
         if cmd == "udrandom":
             return "Call /udrandom with no arguments to see a random UrbanDictionary definition."
