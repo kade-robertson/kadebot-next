@@ -89,6 +89,7 @@ class RSS(CommandBase):
             if len(feed['entries']) > 0:
                 startidx = 0
                 recentid = feed['entries'][0]['id']
+                self.logger.info("  Recent ID: {} | Last Saved: {}".format(recentid, last_id))
                 if recentid == last_id:
                     return
                 out = "*Feed Update(s):*"
@@ -97,6 +98,7 @@ class RSS(CommandBase):
                     if startidx >= len(feed['entries']):
                         break
                     recent = feed['entries'][startidx]
+                    self.logger.info(" Checking entry with ID {}".format(recent['id']))
                     if recent['id'] != last_id:
                         outup.append('\n[{}]({})'.format(recent['title'], recent['link']))
                         startidx += 1
@@ -104,15 +106,19 @@ class RSS(CommandBase):
                         break
                 out += ''.join(outup[::-1])
                 bot.send_message(chat_id = chat_id,
-                                parse_mode = ParseMode.MARKDOWN,
-                                text = out,
-                                disable_notification = False)
+                                 parse_mode = ParseMode.MARKDOWN,
+                                 text = out,
+                                 disable_notification = False
+                                 disable_web_page_preview = 'True')
                 lst = self.feeddict[chat_id]
                 for i in range(len(lst)):
                     if lst[i][0] == feedurl:
+                        self.logger.info("Old entry: {}".format(lst[i]))
                         lst[i] = (feedurl, interval, recentid)
+                        self.logger.info("New entry: {}".format(lst[i]))
                         break
                 self.feeddict[chat_id] = lst
+                self.logger.info("Updated dictionary: {}".format(self.feeddict[chat_id]))
         except Exception as e:
             raise(e)
     def execute_rss(self, bot, update):
