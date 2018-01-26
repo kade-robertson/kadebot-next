@@ -1,6 +1,5 @@
 from .basic import CommandBase, CommandInfo, CommandType
 from .cat import Cat
-from .dayfact import DayFact
 from .dog import Dog
 from .eightball import EightBall
 from .grt import GRT
@@ -10,6 +9,7 @@ from .populartimes import PopularTimes
 from .randomaww import RandomAww
 from .rss import RSS
 from .sonnetgen import SonnetGen
+from .todayfact import TodayFact
 from .translate import Translate
 from .urbandict import UrbanDictionary
 from .weather import Weather
@@ -21,7 +21,6 @@ __all__ = [
     'CommandInfo',
     'CommandType',
     'Cat',
-    'DayFact',
     'Dog',
     'EightBall',
     'GRT',
@@ -31,6 +30,7 @@ __all__ = [
     'RandomAww',
     'RSS',
     'SonnetGen',
+    'TodayFact',
     'Translate',
     'UrbanDictionary',
     'Weather',

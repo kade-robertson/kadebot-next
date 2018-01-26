@@ -14,9 +14,9 @@ import datetime
 import requests
 from .basic import CommandBase, CommandInfo, CommandType
 
-class DayFact(CommandBase):
-    name = "DayFact"
-    safename = "dayfact"
+class TodayFact(CommandBase):
+    name = "TodayFact"
+    safename = "todayfact"
     def __init__(self, logger):
         super().__init__(logger)
         self.sched_chats = dict()
