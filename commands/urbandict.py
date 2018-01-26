@@ -38,8 +38,8 @@ class UrbanDictionary(CommandBase):
                                  defn, 
                                  example),
                              parse_mode = 'HTML',
-                             disable_notification = 'True',
-                             disable_web_page_preview = 'True')
+                             disable_notification = True,
+                             disable_web_page_preview = True)
             self.logger.info("Command /udrandom executed successfully.")
         except Exception as e:
             self.logger.error(e)

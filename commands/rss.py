@@ -108,8 +108,8 @@ class RSS(CommandBase):
                 bot.send_message(chat_id = chat_id,
                                  parse_mode = ParseMode.MARKDOWN,
                                  text = out,
-                                 disable_notification = False
-                                 disable_web_page_preview = 'True')
+                                 disable_notification = False,
+                                 disable_web_page_preview = True)
                 lst = self.feeddict[chat_id]
                 for i in range(len(lst)):
                     if lst[i][0] == feedurl:
