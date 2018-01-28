@@ -84,7 +84,7 @@ class TodayFact(CommandBase):
             args = shlex.split(update.message.text)
             if len(args) != 2:
                 bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /rss.",
+                                 text = "This doesn't seem like correct usage of /todayreg.",
                                  disable_notification = True)
                 return
             if not args[1].isdigit() and 0 <= int(args[1]) <= 23:
