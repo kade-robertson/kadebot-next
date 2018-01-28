@@ -24,6 +24,7 @@ regdhelp = dict()
 
 def version(bot, update):
     res = check_output(["git", "rev-list", "--count", "HEAD"])
+    res = res.decode("utf-8").strip()
     bot.send_message(chat_id = update.message.chat_id,
                      text = "kadebot rev. {}".format(res),
                      disable_notification = True)
