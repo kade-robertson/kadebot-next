@@ -9,6 +9,7 @@ import importlib
 import commands as _commands
 from commands import CommandBase, CommandType, CommandInfo
 
+from subprocess import check_output
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
 from ruamel.yaml import YAML
@@ -20,6 +21,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 baseconf = dict()
 commands = []
 regdhelp = dict()
+
+def version(bot, update):
+    res = check_output(["git", "rev-list", "--count", "HEAD"])
+    bot.send_message(chat_id = update.message.chat_id,
+                     text = "kadebot rev. {}".format(res)
+                     disable_notification = True)
 
 def kill(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
@@ -93,6 +100,7 @@ def main():
     dispatcher.add_handler(CommandHandler("reload", reload))
     dispatcher.add_handler(CommandHandler("update", update))
     dispatcher.add_handler(CommandHandler("kill", kill))
+    dispatcher.add_handler(CommandHandler("version", version))
     to_schedule = []
     for cmd in commands:
         for ci in cmd.to_register:
