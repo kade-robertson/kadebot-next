@@ -25,7 +25,7 @@ regdhelp = dict()
 def version(bot, update):
     res = check_output(["git", "rev-list", "--count", "HEAD"])
     bot.send_message(chat_id = update.message.chat_id,
-                     text = "kadebot rev. {}".format(res)
+                     text = "kadebot rev. {}".format(res),
                      disable_notification = True)
 
 def kill(bot, update):
