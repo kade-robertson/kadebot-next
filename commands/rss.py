@@ -26,8 +26,13 @@ class RSS(CommandBase):
         '2m': 120,
         '5m': 300,
         '15m': 900,
+        '30m': 1800,
         '1h': 3600,
-        '3h': 10800
+        '2h': 7200,
+        '3h': 10800,
+        '6h': 21600,
+        '12h': 43200,
+        '24h': 86400
     }
     int_opts_r = dict((v, k) for k, v in int_opts.items())
     def __init__(self, logger):
