@@ -95,7 +95,7 @@ class RSS(CommandBase):
                 self.logger.info("  Recent ID: {} | Last Saved: {}".format(recentid, last_id))
                 if recentid == last_id:
                     return
-                out = "*{} Feed Update(s):*".format(name)
+                out = "<b>{} Feed Update(s):</b>".format(name)
                 outup = []
                 while True:
                     if startidx >= len(feed['entries']):
@@ -103,13 +103,13 @@ class RSS(CommandBase):
                     recent = feed['entries'][startidx]
                     self.logger.info(" Checking entry with ID {}".format(recent['id']))
                     if recent['id'] != last_id:
-                        outup.append('\n[{}]({})'.format(recent['title'], recent['link']))
+                        outup.append('\n<a href="{}">{}</a>'.format(recent['link'],recent['title']))
                         startidx += 1
                     else:
                         break
                 out += ''.join(outup[::-1])
                 bot.send_message(chat_id = chat_id,
-                                 parse_mode = ParseMode.MARKDOWN,
+                                 parse_mode = ParseMode.HTML,
                                  text = out,
                                  disable_notification = False,
                                  disable_web_page_preview = True)
