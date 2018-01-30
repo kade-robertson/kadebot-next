@@ -53,11 +53,14 @@ class TodayFact(CommandBase):
         todaystr = '{} {}{}'.format(today.strftime('%B'), today.day, ending)
         output = "*{}*:".format(todaystr)
         with requests.Session() as sess:
-            for i in range(5):
-                data = sess.get(
+            data = set()
+            tries = 15
+            while len(data) != 5 and tries > 0:
+                data.add(sess.get(
                     'http://numbersapi.com/{}/{}/date'.format(today.month, today.day)
-                ).text
-                output += "\n -{}".format(data.replace(todaystr, ''))
+                ).text.replace(todaystr, ''))
+                tries -= 1
+            output += '\n' + '\n'.join(' - {}'.format(x) for x in sorted(data))
         bot.send_message(
             chat_id = chatid,
             text = output,
@@ -84,7 +87,7 @@ class TodayFact(CommandBase):
             args = shlex.split(update.message.text)
             if len(args) != 2:
                 bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /todayreg.",
+                                 text = "This doesn't seem like correct usage of /rss.",
                                  disable_notification = True)
                 return
             if not args[1].isdigit() and 0 <= int(args[1]) <= 23:
