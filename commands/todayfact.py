@@ -60,7 +60,8 @@ class TodayFact(CommandBase):
                     'http://numbersapi.com/{}/{}/date'.format(today.month, today.day)
                 ).text.replace(todaystr, ''))
                 tries -= 1
-            output += '\n' + '\n'.join(' - {}'.format(x) for x in sorted(data))
+            data = sorted(data, key=lambda x: int(x.split()[4]))
+            output += '\n' + '\n'.join(' -{}'.format(x) for x in data)
         bot.send_message(
             chat_id = chatid,
             text = output,
