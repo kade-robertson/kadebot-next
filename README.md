@@ -26,7 +26,7 @@ Configuration for individual commands can be seen in the command file itself, or
 1. Clone the repository.
 2. Install the required dependencies:
    ```
-   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha markovify openweathermapy emoji feedparser
+   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha markovify openweathermapy emoji feedparser py_expression_eval
    ```
    You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges. You will also need [populartimes](https://github.com/m-wrzr/populartimes) which is not available on PyPi if you plan on setting up /popular. You may be able to omit some dependencies if you don't want to use certain commands.
 3. Get a bot token for Telegram, through @BotFather.
