@@ -4,6 +4,7 @@ from .dog import Dog
 from .eightball import EightBall
 from .grt import GRT
 from .markov import Markov
+from .matheval import MathEval
 from .movie import Movie
 from .populartimes import PopularTimes
 from .randomaww import RandomAww
@@ -25,6 +26,7 @@ __all__ = [
     'EightBall',
     'GRT',
     'Markov',
+    'MathEval',
     'Movie',
     'PopularTimes',
     'RandomAww',

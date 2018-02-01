@@ -6,6 +6,7 @@
 # Configuration: None
 
 import shlex
+from py_expression_eval import Parser
 from .basic import *
 
 class MathEval(CommandBase):
@@ -30,6 +31,13 @@ class MathEval(CommandBase):
                                  text = "This doesn't seem like correct usage of /math.",
                                  disable_notification = True)
                 return
+            p = Parser()
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "Result: {}".format(p.parse(expr).evaluate({})),
+                             disable_notification = True)
             self.logger.info('Command /math executed successfully.')
         except Exception as e:
+            bot.send_photo(chat_id = update.message.chat_id,
+                           photo = r'http://i3.kym-cdn.com/photos/images/newsfeed/000/234/739/fa5.jpg',
+                           disable_notification = True)
             self.logger.error(e)
