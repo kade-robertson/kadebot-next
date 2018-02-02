@@ -63,6 +63,9 @@ class XKCD(CommandBase):
             self.send_comic(bot, update, args[1])
             self.logger.info("Command /xkcd executed successfully")
         except Exception as e:
+            bot.send_photo(chat_id = update.message.chat_id,
+                           photo = r'http://i3.kym-cdn.com/photos/images/newsfeed/000/234/739/fa5.jpg',
+                           disable_notification = True)
             self.logger.error(e)
     def execute_random(self, bot, update):
         try:
@@ -70,4 +73,7 @@ class XKCD(CommandBase):
             self.send_comic(bot, update, newl.split('.com/')[1].split('/')[0])
             self.logger.info("Command /xkcdr executed successfully")
         except Exception as e:
+            bot.send_photo(chat_id = update.message.chat_id,
+                           photo = r'http://i3.kym-cdn.com/photos/images/newsfeed/000/234/739/fa5.jpg',
+                           disable_notification = True)
             self.logger.error(e)
