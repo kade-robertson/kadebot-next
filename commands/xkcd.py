@@ -28,11 +28,22 @@ class XKCD(CommandBase):
         else:
             return 'Call /xkcdr with no arguments to view a random comic.'
     def send_comic(self, bot, update, comicid):
+        if comicid == '404':
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = '404: Comic Not Found',
+                             disable_notification = True)
+            return
         comicurl = 'https://xkcd.com/{}/'.format(comicid)
-        comic = self.sess.get(comicurl).json()
+        comic = self.sess.get(comicurl + 'info.0.json')
+        if comic.status_code != 200:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = '404: Comic Not Found',
+                             disable_notification = True)
+            return
+        comic = comic.json()
         msg = '<b>Link:</b> {}\n'.format(comicurl, comic['title'])
         msg += '<b>Date:</b> {}-{}-{}\n'.format(
-            comic['year'].zfill(4), comic['month'].zfill(2), comic['day'].zfill(3)
+            comic['year'].zfill(4), comic['month'].zfill(2), comic['day'].zfill(2)
         )
         msg += '<b>Alt Text</b>: {}'.format(comic['alt'])
         bot.send_photo(chat_id = update.message.chat_id,
@@ -55,6 +66,8 @@ class XKCD(CommandBase):
             self.logger.error(e)
     def execute_random(self, bot, update):
         try:
+            newl = self.sess.get('https://c.xkcd.com/random/comic/').url
+            self.send_comic(bot, update, newl.split('.com/')[1].split('/')[0])
             self.logger.info("Command /xkcdr executed successfully")
         except Exception as e:
             self.logger.error(e)

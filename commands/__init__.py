@@ -16,6 +16,7 @@ from .urbandict import UrbanDictionary
 from .weather import Weather
 from .wikipedia import Wikipedia
 from .wolfram import Wolfram
+from .xkcd import XKCD
 
 __all__ = [
     'CommandBase',
@@ -37,5 +38,6 @@ __all__ = [
     'UrbanDictionary',
     'Weather',
     'Wikipedia',
-    'Wolfram'
+    'Wolfram',
+    'XKCD'
 ]
