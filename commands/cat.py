@@ -16,12 +16,9 @@ class Cat(CommandBase):
         ]
     def get_help_msg(self, cmd):
         return "Call /cat with no arguments."
+    @log_error
     def execute(self, bot, update):
-        try:
-            data = requests.head("http://thecatapi.com/api/images/get")
-            bot.send_photo(chat_id = update.message.chat_id, 
-                           photo = data.headers["Location"],
-                           disable_notification = True)
-            self.logger.info("/cat executed successfully.")
-        except Exception as e:
-            self.logger.exception(e)
+        data = requests.head("http://thecatapi.com/api/images/get")
+        bot.send_photo(chat_id = update.message.chat_id, 
+                       photo = data.headers["Location"],
+                       disable_notification = True)
