@@ -1,5 +1,16 @@
+import shlex
 from enum import Enum
 from telegram.ext import Filters
+
+def log_error(func)
+    def do(self, bot, update):
+        args = shlex.split(update.message.text)
+        try:
+            func(self, bot, update)
+            self.logger.info("Command {} executed successfully.".format(args[0])
+        except Exception as e:
+            self.logger.error(e)
+    return do
 
 class CommandType(Enum):
     Default = 0
