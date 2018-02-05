@@ -55,25 +55,15 @@ class XKCD(CommandBase):
                          parse_mode = 'HTML',
                          disable_notification = True,
                          disable_web_page_preview = True)
-    def execute(self, bot, update):
-        try:
-            args = shlex.split(update.message.text)
-            if len(args) != 2:
-                return
-            self.send_comic(bot, update, args[1])
-            self.logger.info("Command /xkcd executed successfully")
-        except Exception as e:
-            bot.send_photo(chat_id = update.message.chat_id,
-                           photo = r'http://i3.kym-cdn.com/photos/images/newsfeed/000/234/739/fa5.jpg',
-                           disable_notification = True)
-            self.logger.error(e)
-    def execute_random(self, bot, update):
-        try:
-            newl = self.sess.get('https://c.xkcd.com/random/comic/').url
-            self.send_comic(bot, update, newl.split('.com/')[1].split('/')[0])
-            self.logger.info("Command /xkcdr executed successfully")
-        except Exception as e:
-            bot.send_photo(chat_id = update.message.chat_id,
-                           photo = r'http://i3.kym-cdn.com/photos/images/newsfeed/000/234/739/fa5.jpg',
-                           disable_notification = True)
-            self.logger.error(e)
+    @log_error
+    def execute(self, bot, update, args):
+        if len(args) != 1:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This doesn't seem like correct usage of /xkcd.",
+                             disable_notification = True)
+            return
+        self.send_comic(bot, update, args[0])
+    @log_error
+    def execute_random(self, bot, update, args):
+        newl = self.sess.get('https://c.xkcd.com/random/comic/').url
+        self.send_comic(bot, update, newl.split('.com/')[1].split('/')[0])
