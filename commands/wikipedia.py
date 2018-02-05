@@ -41,7 +41,7 @@ class Wikipedia(CommandBase):
                              text = "This doesn't seem like correct usage of /wikisearch.",
                                 disable_notification = True)
             return
-        results = wikipedia.search(args[0]])
+        results = wikipedia.search(args[0])
         output = "Available articles:\n" + \
                  '\n'.join(" - {}".format(res) for res in results[:7])
         bot.send_message(chat_id = update.message.chat_id,

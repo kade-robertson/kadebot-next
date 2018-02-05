@@ -7,7 +7,7 @@
 
 import shlex
 import requests
-from .basic import CommandBase, CommandInfo
+from .basic import *
 
 class UrbanDictionary(CommandBase):
     name = "UrbanDictionary"

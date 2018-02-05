@@ -12,7 +12,7 @@ import os
 import shlex
 import datetime
 import requests
-from .basic import CommandBase, CommandInfo, CommandType
+from .basic import *
 
 class TodayFact(CommandBase):
     name = "TodayFact"
