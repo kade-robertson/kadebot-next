@@ -68,12 +68,9 @@ class TodayFact(CommandBase):
             parse_mode = 'MARKDOWN',
             disable_notification = True
         )
-    def execute(self, bot, update):
-        try:
-            self.send_stats(bot, update.message.chat_id)
-            self.logger.info("Command /today executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
+    @log_error
+    def execute(self, bot, update, args):
+        self.send_stats(bot, update.message.chat_id)
     def setup_facts(self, updater):
         self.temp_upd = updater
         if self.sched_chats is not None:
@@ -83,46 +80,39 @@ class TodayFact(CommandBase):
                     time = datetime.time(hour, 0, 0),
                     context = key
                 )
-    def execute_sched(self, bot, update):
-        try:
-            args = shlex.split(update.message.text)
-            if len(args) != 2:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /rss.",
-                                 disable_notification = True)
-                return
-            if not args[1].isdigit() and 0 <= int(args[1]) <= 23:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This is not a valid hour (0 <= hour <= 23).",
-                                 disable_notification = True)
-                return
-            if update.message.chat_id in self.sched_chats.keys():
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This chat has daily facts scheduled already.",
-                                 disable_notification = True)
-                return
-            self.sched_chats[update.message.chat_id] = int(args[1])
-            self.temp_upd.job_queue.run_daily(
-                self.execute_today,
-                time = datetime.time(int(args[1]), 0, 0),
-                context = update.message.chat_id
-            )
+    @log_error
+    def execute_sched(self, bot, update, args):
+        if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
-                             text = "Daily facts have been scheduled.",
+                             text = "This doesn't seem like correct usage of /rss.",
                              disable_notification = True)
-            self.logger.info("Command /todayreg executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
-    def execute_del(self, bot, update):
-        try:
-            if update.message.chat_id in self.sched_chats.keys():
-                del self.sched_chats[update.message.chat_id]
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "Daily facts have been disabled.",
-                                 disable_notification = True)
-            self.logger.info("Command /todaydel executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
+            return
+        if not args[0].isdigit() and 0 <= int(args[0]) <= 23:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This is not a valid hour (0 <= hour <= 23).",
+                             disable_notification = True)
+            return
+        if update.message.chat_id in self.sched_chats.keys():
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This chat has daily facts scheduled already.",
+                             disable_notification = True)
+            return
+        self.sched_chats[update.message.chat_id] = int(args[0])
+        self.temp_upd.job_queue.run_daily(
+            self.execute_today,
+            time = datetime.time(int(args[0]), 0, 0),
+            context = update.message.chat_id
+        )
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = "Daily facts have been scheduled.",
+                         disable_notification = True)
+    @log_error
+    def execute_del(self, bot, update, args):
+        if update.message.chat_id in self.sched_chats.keys():
+            del self.sched_chats[update.message.chat_id]
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "Daily facts have been disabled.",
+                             disable_notification = True)
     def execute_today(self, bot, job):
         try:
             if self.sched_chats is None or not job.context in self.sched_chats.keys():
