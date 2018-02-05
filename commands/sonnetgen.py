@@ -20,17 +20,15 @@ class SonnetGen(CommandBase):
         ]
     def get_help_msg(self, cmd):
         return "Call /sonnetgen with no arguments."
-    def execute(self, bot, update):
-        try:
-            with open('shakespeare/sonnets.json', 'r') as f:
-                dat = markovify.NewlineText.from_json(f.read())
-            out = [dat.make_sentence()]
-            while out[-1][-1] not in '.!?' or len(out) < 5:
-                out.append(dat.make_sentence())
-            bot.send_message(chat_id = update.message.chat_id,
-                             text = '\n'.join(out),
-                             disable_notification = True)
-            self.logger.info("Command /sonnetgen completed successfully.")
-        except Exception as e:
-            self.logger.exception(e)
+    @log_error
+    def execute(self, bot, update, args):
+        with open('shakespeare/sonnets.json', 'r') as f:
+            dat = markovify.NewlineText.from_json(f.read())
+        out = [dat.make_sentence()]
+        while out[-1][-1] not in '.!?' or len(out) < 5:
+            out.append(dat.make_sentence())
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = '\n'.join(out),
+                         disable_notification = True)
+        self.logger.info("Command /sonnetgen completed successfully.")
             
