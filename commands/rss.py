@@ -131,105 +131,94 @@ class RSS(CommandBase):
                 job.context = (chat_id, self.feeddict[chat_id][idx])
         except Exception as e:
             raise(e)
-    def execute_rss(self, bot, update):
-        try:
-            args = shlex.split(update.message.text)
-            if len(args) != 4:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /rss.",
+    @log_error
+    def execute_rss(self, bot, update, args):
+        if len(args) != 3:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This doesn't seem like correct usage of /rss.",
+                             disable_notification = True)
+            return
+        attempt = requests.head(args[1])
+        if attempt.status_code not in (200, 429):
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This doesn't seem to be a valid link.",
+                             disable_notification = True)
+            return
+        if args[2] not in self.int_opts.keys():
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This doesn't seem to be a valid interval.",
+                             disable_notification = True)
+            return
+        interval = self.int_opts[args[2]]
+        curid = feedparser.parse(args[1])['entries'][0]['id']
+        if update.message.chat_id in self.feeddict.keys():
+            tryx = self.feeddict[update.message.chat_id]
+        else:
+            self.feeddict[update.message.chat_id] = []
+            tryx = []
+        if args[1] not in [x[0] for x in tryx]:
+            self.feeddict[update.message.chat_id].append((args[0], args[1], interval, curid))
+            self.temp_upd.job_queue.run_repeating(
+                self.check_rss,
+                interval=datetime.timedelta(seconds=interval),
+                context=(update.message.chat_id, (args[0], args[1], interval, curid))
+            )
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "Your RSS feed has been registered.",
+                             disable_notification = True)
+    @log_error
+    def execute_feeds(self, bot, update, args):
+        chatid = update.message.chat_id
+        if chatid in self.feeddict.keys():
+            if self.feeddict[chatid] is None or len(self.feeddict[chatid]) < 1:
+                bot.send_message(chat_id = chatid,
+                                 text = "You don't have any feeds registered.",
                                  disable_notification = True)
                 return
-            attempt = requests.head(args[2])
-            if attempt.status_code not in (200, 429):
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem to be a valid link.",
+            out = "*Your RSS feeds:*"
+            for idx, item in enumerate(self.feeddict[chatid]):
+                out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[2]])
+            bot.send_message(chat_id = chatid,
+                             parse_mode = ParseMode.MARKDOWN,
+                             text = out,
+                             disable_notification = False)
+        else:
+            bot.send_message(chat_id = chatid,
+                             text = "You don't have any feeds registered.",
+                             disable_notification = True)
+    @log_error
+    def execute_feeddel(self, bot, update):
+        if len(args) != 1:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This doesn't seem like correct usage of /rssdel.",
+                             disable_notification = True)
+            return
+        chatid = update.message.chat_id
+        if chatid in self.feeddict.keys():
+            if self.feeddict[chatid] is None or len(self.feeddict[chatid]) < 1:
+                bot.send_message(chat_id = chatid,
+                                 text = "You don't have any feeds registered.",
                                  disable_notification = True)
                 return
-            if args[3] not in self.int_opts.keys():
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem to be a valid interval.",
-                                 disable_notification = True)
-                return
-            interval = self.int_opts[args[3]]
-            curid = feedparser.parse(args[2])['entries'][0]['id']
-            if update.message.chat_id in self.feeddict.keys():
-                tryx = self.feeddict[update.message.chat_id]
-            else:
-                self.feeddict[update.message.chat_id] = []
-                tryx = []
-            if args[2] not in [x[0] for x in tryx]:
-                self.feeddict[update.message.chat_id].append((args[1], args[2], interval, curid))
-                self.temp_upd.job_queue.run_repeating(
-                    self.check_rss,
-                    interval=datetime.timedelta(seconds=interval),
-                    context=(update.message.chat_id, (args[1], args[2], interval, curid))
-                )
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "Your RSS feed has been registered.",
-                                 disable_notification = True)
-            self.logger.info("Command /rss executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
-    def execute_feeds(self, bot, update):
-        try:
-            chatid = update.message.chat_id
-            if chatid in self.feeddict.keys():
-                if self.feeddict[chatid] is None or len(self.feeddict[chatid]) < 1:
-                    bot.send_message(chat_id = chatid,
-                                    text = "You don't have any feeds registered.",
-                                    disable_notification = True)
-                    return
-                out = "*Your RSS feeds:*"
-                for idx, item in enumerate(self.feeddict[chatid]):
-                    out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[2]])
+            if args[0].isdigit() and 0 <= int(args[0]) < len(self.feeddict[chatid]):
+                self.feeddict[chatid].pop(int(args[0]))
+                out = "Feed deleted successfully."
+                if len(self.feeddict[chatid]) > 0:
+                    out += "\n\n*Remaining RSS feeds:*"
+                    for idx, item in enumerate(self.feeddict[chatid]):
+                        out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[2]])
+                else:
+                    out += " You have no feeds remaining."
                 bot.send_message(chat_id = chatid,
                                  parse_mode = ParseMode.MARKDOWN,
                                  text = out,
                                  disable_notification = False)
             else:
                 bot.send_message(chat_id = chatid,
-                                 text = "You don't have any feeds registered.",
-                                 disable_notification = True)
-            self.logger.info("Command /rssfeeds executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
-    def execute_feeddel(self, bot, update):
-        try:
-            args = shlex.split(update.message.text)
-            if len(args) != 2:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /rssdel.",
+                                 text = "This is not a valid feed index.",
                                  disable_notification = True)
                 return
-            chatid = update.message.chat_id
-            if chatid in self.feeddict.keys():
-                if self.feeddict[chatid] is None or len(self.feeddict[chatid]) < 1:
-                    bot.send_message(chat_id = chatid,
-                                    text = "You don't have any feeds registered.",
-                                    disable_notification = True)
-                    return
-                if args[1].isdigit() and 0 <= int(args[1]) < len(self.feeddict[chatid]):
-                    self.feeddict[chatid].pop(int(args[1]))
-                    out = "Feed deleted successfully."
-                    if len(self.feeddict[chatid]) > 0:
-                        out += "\n\n*Remaining RSS feeds:*"
-                        for idx, item in enumerate(self.feeddict[chatid]):
-                            out += '\n{}: {} ({})'.format(idx, item[0], self.int_opts_r[item[2]])
-                    else:
-                        out += " You have no feeds remaining."
-                    bot.send_message(chat_id = chatid,
-                                     parse_mode = ParseMode.MARKDOWN,
-                                     text = out,
-                                     disable_notification = False)
-                else:
-                    bot.send_message(chat_id = chatid,
-                                    text = "This is not a valid feed index.",
-                                    disable_notification = True)
-                    return
-            else:
-                bot.send_message(chat_id = chatid,
-                                 text = "You don't have any feeds registered.",
-                                 disable_notification = True)
-            self.logger.info("Command /rssdel executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
+        else:
+            bot.send_message(chat_id = chatid,
+                             text = "You don't have any feeds registered.",
+                             disable_notification = True)
