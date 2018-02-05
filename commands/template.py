@@ -24,5 +24,5 @@ class ExamplePugin(CommandBase):
                              disable_notification = True)
         else:
             bot.send_message(chat_id = update.message.chat_id, 
-                             text = "Hello, {}!".format(args[0],
+                             text = "Hello, {}!".format(args[0]),
                              disable_notification = True)
