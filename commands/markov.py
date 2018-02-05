@@ -45,7 +45,7 @@ class Markov(CommandBase):
                 f.write(udata)
         self.logger.info("  Done saving.")
     @log_error
-    def execute_generate(self, bot, update, **kwargs):
+    def execute_generate(self, bot, update, args):
         user = 'markov_model'
         if user in self.users:
             out = None

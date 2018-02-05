@@ -19,8 +19,7 @@ class GRT(CommandBase):
     def get_help_msg(self, cmd):
         return "Call /grt <stop> <bus> to check bus times."
     @log_error
-    def execute(self, bot, update, **kwargs):
-        args = kwargs.get('args')
+    def execute(self, bot, update, args):
         if len(args) != 2:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /grt.",

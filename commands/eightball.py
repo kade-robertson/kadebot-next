@@ -37,7 +37,7 @@ class EightBall(CommandBase):
     def get_help_msg(self, cmd):
         return "Call /8ball with no arguments."
     @log_error
-    def execute(self, bot, update, **kwargs):
+    def execute(self, bot, update, args):
         bot.send_message(chat_id = update.message.chat_id, 
                          text = "The 8-ball says: {}".format(random.choice(self.options)),
                          disable_notification = True)

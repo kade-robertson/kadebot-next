@@ -90,14 +90,13 @@ class Dog(CommandBase):
         self.breed_list = temp_list
         self.logger.info("Scheduled task dogbreeds completed.")
     @log_error
-    def execute_list(self, bot, update, **kwargs):
+    def execute_list(self, bot, update, args):
         if len(self.breed_list) == 0:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "Not available, breed list isn't populated.",
                              disable_notification = True)
             self.logger.info("/dogsearch had no list to search.")
             return
-        args = kwargs.get('args')
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /dogsearch.",
