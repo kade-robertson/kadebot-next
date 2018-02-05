@@ -60,7 +60,7 @@ class Weather(CommandBase):
                 "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
         ix = int((d + 11.25)/22.5 - 0.02)
         return dirs[ix % 16]
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         try:
             if len(args) != 1:

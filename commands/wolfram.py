@@ -21,7 +21,7 @@ class Wolfram(CommandBase):
         self.api = wolframalpha.Client(confdict["api_key"])
     def get_help_msg(self, cmd):
         return "Usage: /wolfram <question>"
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         res = self.api.query(" ".join(args))
         bot.send_message(chat_id = update.message.chat_id, 

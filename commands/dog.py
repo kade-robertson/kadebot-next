@@ -42,7 +42,7 @@ class Dog(CommandBase):
             else:
                 out += item + '/'
         return out[:-1]
-    @log_error
+    @bot_command
     def execute(self, bot, update, **kwargs):
         args = kwargs.get('args')
         if len(args) == 0:
@@ -89,7 +89,7 @@ class Dog(CommandBase):
                 self.logger.info(" - {} collection done.".format(breed))
         self.breed_list = temp_list
         self.logger.info("Scheduled task dogbreeds completed.")
-    @log_error
+    @bot_command
     def execute_list(self, bot, update, args):
         if len(self.breed_list) == 0:
             bot.send_message(chat_id = update.message.chat_id,

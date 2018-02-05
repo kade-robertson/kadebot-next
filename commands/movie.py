@@ -30,7 +30,7 @@ class Movie(CommandBase):
         elif cmd == "moviesearch":
             return ('Call /moviesearch <search> with the title you wish to search for, '
                     'using quotes if there are spaces.')
-    @log_error
+    @bot_command
     def execute_movie(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
@@ -57,7 +57,7 @@ class Movie(CommandBase):
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
                          disable_notification = True)
-    @log_error
+    @bot_command
     def execute_search(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,

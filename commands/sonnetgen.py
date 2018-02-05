@@ -20,7 +20,7 @@ class SonnetGen(CommandBase):
         ]
     def get_help_msg(self, cmd):
         return "Call /sonnetgen with no arguments."
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         with open('shakespeare/sonnets.json', 'r') as f:
             dat = markovify.NewlineText.from_json(f.read())

@@ -55,7 +55,7 @@ class XKCD(CommandBase):
                          parse_mode = 'HTML',
                          disable_notification = True,
                          disable_web_page_preview = True)
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
@@ -63,7 +63,7 @@ class XKCD(CommandBase):
                              disable_notification = True)
             return
         self.send_comic(bot, update, args[0])
-    @log_error
+    @bot_command
     def execute_random(self, bot, update, args):
         newl = self.sess.get('https://c.xkcd.com/random/comic/').url
         self.send_comic(bot, update, newl.split('.com/')[1].split('/')[0])

@@ -131,7 +131,7 @@ class RSS(CommandBase):
                 job.context = (chat_id, self.feeddict[chat_id][idx])
         except Exception as e:
             raise(e)
-    @log_error
+    @bot_command
     def execute_rss(self, bot, update, args):
         if len(args) != 3:
             bot.send_message(chat_id = update.message.chat_id,
@@ -166,7 +166,7 @@ class RSS(CommandBase):
             bot.send_message(chat_id = update.message.chat_id,
                              text = "Your RSS feed has been registered.",
                              disable_notification = True)
-    @log_error
+    @bot_command
     def execute_feeds(self, bot, update, args):
         chatid = update.message.chat_id
         if chatid in self.feeddict.keys():
@@ -186,7 +186,7 @@ class RSS(CommandBase):
             bot.send_message(chat_id = chatid,
                              text = "You don't have any feeds registered.",
                              disable_notification = True)
-    @log_error
+    @bot_command
     def execute_feeddel(self, bot, update):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,

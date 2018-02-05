@@ -25,7 +25,7 @@ class RandomAww(CommandBase):
         self.api.read_only = True
     def get_help_msg(self, cmd):
         return "Call /randomaww with no arguments."
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         aww = self.api.subreddit('aww')
         post = aww.random()

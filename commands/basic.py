@@ -2,7 +2,7 @@ import shlex
 from enum import Enum
 from telegram.ext import Filters
 
-def log_error(func):
+def bot_command(func):
     def do(self, bot, update):
         argsx = shlex.split(update.message.text)
         try:

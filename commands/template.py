@@ -16,7 +16,7 @@ class ExamplePugin(CommandBase):
         ]
     def get_help_msg(self, cmd):
         return "{} is an example command which does nothing.".format(cmd)
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         if len(args) == 1:
             bot.send_message(chat_id = update.message.chat_id, 

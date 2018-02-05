@@ -27,7 +27,7 @@ class Translate(CommandBase):
             self.translator = Translator(from_lang = "autodetect", to_lang = "en")
     def get_help_msg(self, cmd):
         return "Call /{} <string> to translate any string to English.".format(cmd)
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         text = " ".join(args)
         new = self.translator.translate(text)

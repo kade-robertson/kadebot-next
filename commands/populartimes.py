@@ -25,7 +25,7 @@ class PopularTimes(CommandBase):
         self.apikey = confdict["api_key"]
     def get_help_msg(self, cmd):
         return "Call /popular \"<place>\" to see the busy times for that place."
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,

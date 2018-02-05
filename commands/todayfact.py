@@ -68,7 +68,7 @@ class TodayFact(CommandBase):
             parse_mode = 'MARKDOWN',
             disable_notification = True
         )
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         self.send_stats(bot, update.message.chat_id)
     def setup_facts(self, updater):
@@ -80,7 +80,7 @@ class TodayFact(CommandBase):
                     time = datetime.time(hour, 0, 0),
                     context = key
                 )
-    @log_error
+    @bot_command
     def execute_sched(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
@@ -106,7 +106,7 @@ class TodayFact(CommandBase):
         bot.send_message(chat_id = update.message.chat_id,
                          text = "Daily facts have been scheduled.",
                          disable_notification = True)
-    @log_error
+    @bot_command
     def execute_del(self, bot, update, args):
         if update.message.chat_id in self.sched_chats.keys():
             del self.sched_chats[update.message.chat_id]

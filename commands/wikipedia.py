@@ -23,7 +23,7 @@ class Wikipedia(CommandBase):
         elif cmd == "wikisearch":
             return ('Call /wikisearch <search> with the article you wish to search for, '
                     'using quotes if there are spaces.')
-    @log_error
+    @bot_command
     def execute_summary(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
@@ -34,7 +34,7 @@ class Wikipedia(CommandBase):
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
                          disable_notification = True)
-    @log_error
+    @bot_command
     def execute_search(self, bot, update):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,

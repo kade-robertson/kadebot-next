@@ -44,7 +44,7 @@ class Markov(CommandBase):
             with open(os.path.join(self.datfolder, '{}.json'.format(user)), 'w', newline='\n') as f:
                 f.write(udata)
         self.logger.info("  Done saving.")
-    @log_error
+    @bot_command
     def execute_generate(self, bot, update, args):
         user = 'markov_model'
         if user in self.users:

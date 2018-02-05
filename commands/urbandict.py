@@ -20,7 +20,7 @@ class UrbanDictionary(CommandBase):
     def get_help_msg(self, cmd):
         if cmd == "udrandom":
             return "Call /udrandom with no arguments to see a random UrbanDictionary definition."
-    @log_error
+    @bot_command
     def execute(self, bot, update, args):
         data = requests.get('http://api.urbandictionary.com/v0/random').json()
         choice = data['list'][0]
