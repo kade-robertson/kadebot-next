@@ -27,13 +27,10 @@ class Translate(CommandBase):
             self.translator = Translator(from_lang = "autodetect", to_lang = "en")
     def get_help_msg(self, cmd):
         return "Call /{} <string> to translate any string to English.".format(cmd)
-    def execute(self, bot, update):
-        try:
-            text = " ".join(shlex.split(update.message.text)[1:])
-            new = self.translator.translate(text)
-            bot.send_message(chat_id = update.message.chat_id,
-                             text = "Translation: {}".format(new),
-                             disable_notification = True)
-            self.logger.info("Command /t executed successfully.")
-        except Exception as e:
-            self.logger.exception(e)
+    @log_error
+    def execute(self, bot, update, args):
+        text = " ".join(args)
+        new = self.translator.translate(text)
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = "Translation: {}".format(new),
+                         disable_notification = True)
