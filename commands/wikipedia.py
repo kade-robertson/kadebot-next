@@ -23,35 +23,27 @@ class Wikipedia(CommandBase):
         elif cmd == "wikisearch":
             return ('Call /wikisearch <search> with the article you wish to search for, '
                     'using quotes if there are spaces.')
-    def execute_summary(self, bot, update):
-        try:
-            args = shlex.split(update.message.text)
-            if len(args) != 2:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /wiki.",
-                                 disable_notification = True)
-                return
-            output = wikipedia.summary(args[1], sentences = 4).replace(" ( listen) ", "")
+    @log_error
+    def execute_summary(self, bot, update, args):
+        if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
-                             text = output,
+                             text = "This doesn't seem like correct usage of /wiki.",
                              disable_notification = True)
-            self.logger.info("Command /wiki completed successfully.")
-        except Exception as e:
-            self.logger.exception(e)
+            return
+        output = wikipedia.summary(args[0], sentences = 4).replace(" ( listen) ", "")
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = output,
+                         disable_notification = True)
+    @log_error
     def execute_search(self, bot, update):
-        try:
-            args = shlex.split(update.message.text)
-            if len(args) != 2:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "This doesn't seem like correct usage of /wikisearch.",
-                                 disable_notification = True)
-                return
-            results = wikipedia.search(args[1])
-            output = "Available articles:\n" + \
-                     '\n'.join(" - {}".format(res) for res in results[:7])
+        if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
-                             text = output,
-                             disable_notification = True)
-            self.logger.info("Command /wikisearch completed successfully.")
-        except Exception as e:
-            self.logger.exception(e)
+                             text = "This doesn't seem like correct usage of /wikisearch.",
+                                disable_notification = True)
+            return
+        results = wikipedia.search(args[0]])
+        output = "Available articles:\n" + \
+                 '\n'.join(" - {}".format(res) for res in results[:7])
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = output,
+                         disable_notification = True)
