@@ -4,16 +4,16 @@ from telegram.ext import Filters
 
 def log_error(func):
     def do(self, bot, update):
-        args = shlex.split(update.message.text)
+        argsx = shlex.split(update.message.text)
         try:
-            func(self, bot, update, args=args[1:])
-            self.logger.info("Command {} executed successfully.".format(args[0]))
+            func(self, bot, update, args=argsx[1:])
+            self.logger.info("Command {} executed successfully.".format(argsx[0]))
         except Exception as e:
             bot.send_photo(chat_id = update.message.chat_id,
                            photo = r'http://i3.kym-cdn.com/photos/images/newsfeed/000/234/739/fa5.jpg',
                            disable_notification = True)
-            errfmt = '{}: {}'.format(args[0], str(e))
-            self.logger.error(e)
+            errfmt = '{}: {}'.format(argsx[0], str(e))
+            self.logger.error(errfmt)
     return do
 
 class CommandType(Enum):
@@ -43,6 +43,4 @@ class CommandBase:
     def load_config(self, confdict):
         pass
     def get_help_msg(self, cmd):
-        raise NotImplementedError
-    def execute(self, bot, update):
         raise NotImplementedError
