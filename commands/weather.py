@@ -60,15 +60,15 @@ class Weather(CommandBase):
                 "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
         ix = int((d + 11.25)/22.5 - 0.02)
         return dirs[ix % 16]
-    def execute(self, bot, update):
+    @log_error
+    def execute(self, bot, update, args):
         try:
-            args = shlex.split(update.message.text)
-            if len(args) != 2:
+            if len(args) != 1:
                 bot.send_message(chat_id = update.message.chat_id,
                                  text = "This doesn't seem like correct usage of /weather.",
                                  disable_notification = True)
                 return
-            data = owm.get_current(args[1], **self.settings)
+            data = owm.get_current(args[0], **self.settings)
             temp, tmin, tmax = data('main.temp', 'main.temp_min', 'main.temp_max')
             form = "<b>Weather for {}, {}:</b>\n".format(data['name'], data['sys']['country'])
             form += " - {} {}\n".format(data['weather'][0]['description'].capitalize(),
@@ -89,4 +89,4 @@ class Weather(CommandBase):
                              text = "The location you chose seems to be invalid.",
                              disable_notification = True)
         except Exception as e:
-            self.logger.error(e)
+            raise(e)
