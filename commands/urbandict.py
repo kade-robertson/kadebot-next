@@ -20,26 +20,24 @@ class UrbanDictionary(CommandBase):
     def get_help_msg(self, cmd):
         if cmd == "udrandom":
             return "Call /udrandom with no arguments to see a random UrbanDictionary definition."
-    def execute(self, bot, update):
-        try:
-            data = requests.get('http://api.urbandictionary.com/v0/random').json()
-            choice = data['list'][0]
-            fmt = '<b>Word:</b> <a href="{}">{}</a>\n<b>Definition:</b> {}\n<b>Example:</b> <i>{}</i>'
-            defn = choice['definition']
-            if len(defn) > 300:
-                defn = defn[:297] + '...'
-            example = choice['example']
-            if '\n' in example:
-                example = '\n'+example
-            bot.send_message(chat_id = update.message.chat_id,
-                             text = fmt.format(
-                                 choice['permalink'], 
-                                 choice['word'], 
-                                 defn, 
-                                 example),
-                             parse_mode = 'HTML',
-                             disable_notification = True,
-                             disable_web_page_preview = True)
-            self.logger.info("Command /udrandom executed successfully.")
-        except Exception as e:
-            self.logger.error(e)
+    @log_error
+    def execute(self, bot, update, args):
+        data = requests.get('http://api.urbandictionary.com/v0/random').json()
+        choice = data['list'][0]
+        fmt = '<b>Word:</b> <a href="{}">{}</a>\n<b>Definition:</b> {}\n<b>Example:</b> <i>{}</i>'
+        defn = choice['definition']
+        if len(defn) > 300:
+            defn = defn[:297] + '...'
+        example = choice['example']
+        if '\n' in example:
+            example = '\n'+example
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = fmt.format(
+                             choice['permalink'], 
+                             choice['word'], 
+                             defn, 
+                             example
+                         ),
+                         parse_mode = 'HTML',
+                         disable_notification = True,
+                         disable_web_page_preview = True)
