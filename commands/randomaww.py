@@ -25,15 +25,12 @@ class RandomAww(CommandBase):
         self.api.read_only = True
     def get_help_msg(self, cmd):
         return "Call /randomaww with no arguments."
-    def execute(self, bot, update):
-        try:
-            aww = self.api.subreddit('aww')
+    @log_error
+    def execute(self, bot, update, args):
+        aww = self.api.subreddit('aww')
+        post = aww.random()
+        while post.post_hint != "image":
             post = aww.random()
-            while post.post_hint != "image":
-                post = aww.random()
-            bot.send_photo(chat_id = update.message.chat_id, 
-                           photo = post.url,
-                           disable_notification = True)
-            self.logger.info("Command /randomaww executed successfully.")
-        except Exception as e:
-            self.logger.exception(e)
+        bot.send_photo(chat_id = update.message.chat_id, 
+                       photo = post.url,
+                       disable_notification = True)
