@@ -44,23 +44,20 @@ class Markov(CommandBase):
             with open(os.path.join(self.datfolder, '{}.json'.format(user)), 'w', newline='\n') as f:
                 f.write(udata)
         self.logger.info("  Done saving.")
-    def execute_generate(self, bot, update):
-        try:
-            user = 'markov_model'
-            if user in self.users:
-                out = None
-                while out == None:
-                    out = self.users[user].make_sentence()
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = out,
-                                 disable_notification = True)
-            else:
-                bot.send_message(chat_id = update.message.chat_id,
-                                 text = "I currently have no data from you, try later.",
-                                 disable_notification = True)
-            self.logger.info("Command /markov completed successfully.")
-        except Exception as e:
-            self.logger.error(e)
+    @log_error
+    def execute_generate(self, bot, update, **kwargs):
+        user = 'markov_model'
+        if user in self.users:
+            out = None
+            while out == None:
+                out = self.users[user].make_sentence()
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = out,
+                             disable_notification = True)
+        else:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "I currently have no data from you, try later.",
+                             disable_notification = True)
     def monitor_modeling(self, bot, update):
         try:
             user = 'markov_model'
