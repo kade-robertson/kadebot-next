@@ -44,11 +44,11 @@ class TodayFact(CommandBase):
     def send_stats(self, bot, chatid):
         today = datetime.datetime.today()
         ending = 'th'
-        if today.day % 10 == 1:
+        if today.day % 10 == 1 and today.day != 11:
             ending = 'st'
-        elif today.day % 10 == 2:
+        elif today.day % 10 == 2 and today.day != 12:
             ending = 'nd'
-        elif today.day % 10 == 3:
+        elif today.day % 10 == 3 and today.day != 13:
             ending = 'rd'
         todaystr = '{} {}{}'.format(today.strftime('%B'), today.day, ending)
         output = "*{}*:".format(todaystr)
