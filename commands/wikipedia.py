@@ -30,10 +30,16 @@ class Wikipedia(CommandBase):
                              text = "This doesn't seem like correct usage of /wiki.",
                              disable_notification = True)
             return
-        output = wikipedia.summary(args[0], sentences = 4).replace(" ( listen) ", "")
+        page = wikipedia.page(args[0])
+        output = wikipedia.summary(args[0], sentences = 4).replace("( listen)", "").strip()
+        if '== ' in output:
+            output = output.split('== ')[0].strip()
+        output += '\n\n<a href="{}">view article</a>'.format(page.url)
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
-                         disable_notification = True)
+                         parse_mode = 'HTML',
+                         disable_notification = True,
+                         disable_web_page_preview = True)
     @bot_command
     def execute_search(self, bot, update):
         if len(args) != 1:
