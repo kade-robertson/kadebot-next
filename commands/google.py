@@ -23,7 +23,6 @@ class Google(CommandBase):
         search = ' '.join(update.message.text.split(' ')[1:])
         gurl = 'https://www.google.ca/search?q={}'.format(urllib.parse.quote_plus(search))
         output = '<a href="{}">view results</a>'.format(gurl)
-        print(output)
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
                          parse_mode = 'HTML',
