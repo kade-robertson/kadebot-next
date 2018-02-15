@@ -8,7 +8,7 @@
 import urllib.parse
 from .basic import *
 
-class ExamplePugin(CommandBase):
+class Google(CommandBase):
     name = "Google"
     safename = "google"
     def __init__(self, logger):

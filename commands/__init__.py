@@ -2,6 +2,7 @@ from .basic import CommandBase, CommandInfo, CommandType
 from .cat import Cat
 from .dog import Dog
 from .eightball import EightBall
+from .google import Google
 from .grt import GRT
 from .markov import Markov
 from .matheval import MathEval
@@ -25,6 +26,7 @@ __all__ = [
     'Cat',
     'Dog',
     'EightBall',
+    'Google',
     'GRT',
     'Markov',
     'MathEval',
