@@ -1,6 +1,6 @@
 *.pyc
-*.conf
-!default.conf
+*.yaml
+!default.yaml
 *.db
 markov_data/*
 rss_data/*
