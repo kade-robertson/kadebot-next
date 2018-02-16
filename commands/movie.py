@@ -44,7 +44,7 @@ class Movie(CommandBase):
                              disable_notification = True)
             return
         movie = self.api.get(imdbid = is_movie[0])
-        output = "Movie: {} ({})\n".format(movie.title, movie.year) + \
+        output = 'Movie: <a href="http://www.imdb.com/title/{}/">{}</a> ({})\n'.format(movie.imdb_id, movie.title, movie.released) + \
                  "Director(s): {}\n".format(movie.director) + \
                  "Actors: {}\n".format(movie.actors) + \
                  "IMDB Score: {} ({} votes)\n".format(movie.imdb_rating, movie.imdb_votes) + \
@@ -56,7 +56,9 @@ class Movie(CommandBase):
                            disable_notification = True)
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
-                         disable_notification = True)
+                         parse_mode = 'HTML',
+                         disable_notification = True,
+                         disable_web_page_preview = True)
     @bot_command
     def execute_search(self, bot, update, args):
         if len(args) != 1:
