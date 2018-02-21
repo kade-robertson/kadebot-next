@@ -159,15 +159,16 @@ def load_config(filename):
     logging.info("Loaded module configurations.")
         
 if __name__ == "__main__":
-    default_config = os.path.expanduser("~/.config/kadebot/kadebot.yaml")
     parser  = argparse.ArgumentParser()
-    parser.add_argument("--config", help="configuration file to use", type=str)
+    parser.add_argument(
+        "--config",
+        default=os.path.expanduser("~/.config/kadebot/kadebot.yaml")
+        help="configuration file to use",
+        type=str
+    )
     args = parser.parse_args()
     if os.path.exists(args.config):
         load_config(args.config)
-        main()
-    elif os.path.exists(default_config):
-        load_config(default_config)
         main()
     else:
         logging.error("No config file found.")
