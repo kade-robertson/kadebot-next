@@ -31,10 +31,11 @@ Configuration for individual commands can be seen in the command file itself, or
    You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges. You will also need [populartimes](https://github.com/m-wrzr/populartimes) which is not available on PyPi if you plan on setting up /popular. You may be able to omit some dependencies if you don't want to use certain commands.
 3. Get a bot token for Telegram, through @BotFather.
 4. Get your user ID for Telegram, through @myidbot.
-5. Modify `default.yaml` and configure whatever you would like.
+5. Modify `default.yaml` and configure whatever you would like. Optionally, copy the configuration to `~/.config/kadebot/kadebot.yaml` to avoid using the `--config` option.
 6. Configure each plugin's configuration as specified in their files.
-7. Run the bot in one of two ways:
+7. Run the bot in one of a few ways:
    ```
+   ./kadeboy.py
    ./kadebot.py --config file.yaml
    python3 kadebot.py --config file.yaml
    ```
