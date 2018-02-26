@@ -162,7 +162,7 @@ if __name__ == "__main__":
     parser  = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default=os.path.expanduser("~/.config/kadebot/kadebot.yaml")
+        default=os.path.expanduser("~/.config/kadebot/kadebot.yaml"),
         help="configuration file to use",
         type=str
     )
