@@ -41,7 +41,7 @@ class Wikipedia(CommandBase):
                          disable_notification = True,
                          disable_web_page_preview = True)
     @bot_command
-    def execute_search(self, bot, update):
+    def execute_search(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /wikisearch.",
