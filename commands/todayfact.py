@@ -56,9 +56,14 @@ class TodayFact(CommandBase):
             data = set()
             tries = 15
             while len(data) != 5 and tries > 0:
-                data.add(sess.get(
+                tdata = sess.get(
                     'http://numbersapi.com/{}/{}/date'.format(today.month, today.day)
-                ).text.replace(todaystr, ''))
+                )
+                while tdata.code != 200:
+                    tdata = sess.get(
+                        'http://numbersapi.com/{}/{}/date'.format(today.month, today.day)
+                    )
+                data.add(tdata.text.replace(todaystr, ''))
                 tries -= 1
             data = sorted(data, key=lambda x: int(x.split()[4]) * (-1 if x.split()[5] == "BC" else 1))
             output += '\n' + '\n'.join(' -{}'.format(x) for x in data)
