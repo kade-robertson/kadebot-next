@@ -59,7 +59,7 @@ class TodayFact(CommandBase):
                 tdata = sess.get(
                     'http://numbersapi.com/{}/{}/date'.format(today.month, today.day)
                 )
-                if tdata.code != 200:
+                if tdata.status_code != 200:
                     continue
                 data.add(tdata.text.replace(todaystr, ''))
                 tries -= 1
