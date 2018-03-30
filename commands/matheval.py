@@ -19,8 +19,9 @@ class MathEval(CommandBase):
         ]
     def get_help_msg(self, cmd):
         return "Call /math <expr> to compute the result of an expression."
-    def execute(self, bot, update, args):
-        expr = args
+    @bot_command
+    def execute(self, bot, update, **kwargs):
+        expr = kwargs.get('args')
         if len(expr) > 1:
             expr = ' '.join(expr)
         elif len(expr) == 1:
