@@ -23,7 +23,7 @@ class Movie(CommandBase):
             CommandInfo("moviesearch", self.execute_search, "Searches for a movie.")
         ]
     def load_config(self, confdict):
-        self.api = omdb.Client(apikey = confdict["api_key"])
+        self.api = omdb.OMDBClient(apikey = confdict["api_key"])
     def get_help_msg(self, cmd):
         if cmd == "movie":
             return 'Call /movie <id> with the IMDb ID of the movie you want information for.'
