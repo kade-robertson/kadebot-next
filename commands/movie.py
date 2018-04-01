@@ -45,15 +45,15 @@ class Movie(CommandBase):
                              disable_notification = True)
             return
         movie = self.api.get(imdbid = is_movie[0])
-        output = 'Movie: <a href="http://www.imdb.com/title/{}/">{}</a> ({})\n'.format(movie.imdb_id, movie.title, movie.released) + \
-                 "Director(s): {}\n".format(movie.director) + \
-                 "Actors: {}\n".format(movie.actors) + \
-                 "IMDB Score: {} ({} votes)\n".format(movie.imdb_rating, movie.imdb_votes) + \
-                 "Metascore: {}\n".format(movie.metascore) + \
-                 "Awards: {}\n\n".format(movie.awards) + movie.plot
-        if movie.poster != "N/A" and requests.get(movie.poster).status_code == 200:
+        output = 'Movie: <a href="http://www.imdb.com/title/{}/">{}</a> ({})\n'.format(movie['imdb_id'], movie['title'], movie['released']) + \
+                 "Director(s): {}\n".format(movie['director']) + \
+                 "Actors: {}\n".format(movie['actors']) + \
+                 "IMDB Score: {} ({} votes)\n".format(movie['imdb_rating'], movie['imdb_votes']) + \
+                 "Metascore: {}\n".format(movie['metascore']) + \
+                 "Awards: {}\n\n".format(movie['awards']) + movie['plot']
+        if movie['poster'] != "N/A" and requests.get(movie['poster']).status_code == 200:
             bot.send_photo(chat_id = update.message.chat_id,
-                           photo = movie.poster,
+                           photo = movie['poster'],
                            disable_notification = True)
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
@@ -71,7 +71,7 @@ class Movie(CommandBase):
         results = self.api.get(search = args[0])
         output = "Results:\n"
         for res in results[:7]:
-            output += " - {} ({}): {}\n".format(res.title, res.year, res.imdb_id)
+            output += " - {} ({}): {}\n".format(res['title'], res['year'], res['imdb_id'])
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
                          disable_notification = True)
