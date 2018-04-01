@@ -31,7 +31,8 @@ class Movie(CommandBase):
             return ('Call /moviesearch <search> with the title you wish to search for, '
                     'using quotes if there are spaces.')
     @bot_command
-    def execute_movie(self, bot, update, args):
+    def execute_movie(self, bot, update, **kwargs):
+        args = kwargs.get('args')
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /movie.",
@@ -60,7 +61,8 @@ class Movie(CommandBase):
                          disable_notification = True,
                          disable_web_page_preview = True)
     @bot_command
-    def execute_search(self, bot, update, args):
+    def execute_search(self, bot, update, **kwargs):
+        args = kwargs.get('args')
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /moviesearch.",
