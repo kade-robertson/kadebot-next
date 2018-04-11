@@ -20,6 +20,7 @@ class TodayFact(CommandBase):
     def __init__(self, logger):
         super().__init__(logger)
         self.sched_chats = dict()
+        self.temp_upd = None
         self.to_register = [
             CommandInfo("today", self.execute, "See facts about today."),
             CommandInfo("todayreg", self.execute_sched, "Schedule daily facts for this chat."),
