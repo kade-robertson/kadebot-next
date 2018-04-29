@@ -30,5 +30,4 @@ class SonnetGen(CommandBase):
         bot.send_message(chat_id = update.message.chat_id,
                          text = '\n'.join(out),
                          disable_notification = True)
-        self.logger.info("Command /sonnetgen completed successfully.")
-            
+
