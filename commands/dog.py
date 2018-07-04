@@ -57,7 +57,7 @@ class Dog(CommandBase):
         data = requests.get(urlfmt).json()
         self.logger.info(data['message'])
         if len(args) == 0:
-            breed = data['message'].split('dog-ceo-stanford-files/')[1].split('/')[0].replace('-', ' ')
+            breed = data['message'].split('https://images.dog.ceo/breeds/')[1].split('/')[0].replace('-', ' ')
             breed = ' '.join(breed.split(' ')[::-1])
             if breed in _doggos.keys():
                 breed = _doggos[breed]
