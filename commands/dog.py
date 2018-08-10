@@ -48,7 +48,7 @@ class Dog(CommandBase):
         if len(args) == 0:
             urlfmt = "https://dog.ceo/api/breeds/image/random"
         elif len(args) == 1:
-            name = self.dogify(args[0].lower().split(' ')[::-1])
+            name = self.dogify(args[0].lower().split(' '))
             urlfmt = "https://dog.ceo/api/breed/{0}/images/random".format(name)
         else:
             name = self.dogify([x.lower() for x in args])
