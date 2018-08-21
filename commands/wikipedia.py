@@ -15,7 +15,8 @@ class Wikipedia(CommandBase):
         super().__init__(logger)
         self.to_register = [
             CommandInfo("wiki", self.execute_summary, "Displays a Wikipedia summary."),
-            CommandInfo("wikisearch", self.execute_search, "Searches for a Wikipedia article.")
+            CommandInfo("wikisearch", self.execute_search, "Searches for a Wikipedia article."),
+            CommandInfo("wikirandom", self.execute_random, "Displays a random Wikipedia summary.")
         ]
     def get_help_msg(self, cmd):
         if cmd == "wiki":
@@ -23,6 +24,12 @@ class Wikipedia(CommandBase):
         elif cmd == "wikisearch":
             return ('Call /wikisearch <search> with the article you wish to search for, '
                     'using quotes if there are spaces.')
+    def _getsummary(self, page):
+        output = wikipedia.summary(page.title, sentences = 4).replace("( listen)", "").strip()
+        if '== ' in output:
+            output = output.split('== ')[0].strip()
+        output += '\n\n<a href="{}">view article</a>'.format(page.url)
+        return output
     @bot_command
     def execute_summary(self, bot, update, args):
         if len(args) != 1:
@@ -31,15 +38,25 @@ class Wikipedia(CommandBase):
                              disable_notification = True)
             return
         page = wikipedia.page(args[0])
-        output = wikipedia.summary(args[0], sentences = 4).replace("( listen)", "").strip()
-        if '== ' in output:
-            output = output.split('== ')[0].strip()
-        output += '\n\n<a href="{}">view article</a>'.format(page.url)
         bot.send_message(chat_id = update.message.chat_id,
-                         text = output,
+                         text = self._getsummary(page)
                          parse_mode = 'HTML',
                          disable_notification = True,
                          disable_web_page_preview = True)
+    @bot_command
+    def execute_random:
+        if len(args) != 0:
+            bot.send_message(chat_id = update.message.chat_id,
+                             text = "This doesn't seem like correct usage of /wikirandom.",
+                             disable_notification = True)
+            return
+        page = wikipedia.random(pages=1)[0]
+        bot.send_message(chat_id = update.message.chat_id,
+                         text = self._getsummary(page)
+                         parse_mode = 'HTML',
+                         disable_notification = True,
+                         disable_web_page_preview = True)
+        
     @bot_command
     def execute_search(self, bot, update, args):
         if len(args) != 1:
