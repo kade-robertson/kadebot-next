@@ -50,7 +50,7 @@ class Wikipedia(CommandBase):
                              text = "This doesn't seem like correct usage of /wikirandom.",
                              disable_notification = True)
             return
-        page = wikipedia.random(pages=1)[0]
+        page = wikipedia.random(pages=1)
         bot.send_message(chat_id = update.message.chat_id,
                          text = self._getsummary(page)
                          parse_mode = 'HTML',
