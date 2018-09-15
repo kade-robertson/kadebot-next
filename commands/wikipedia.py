@@ -25,7 +25,7 @@ class Wikipedia(CommandBase):
             return ('Call /wikisearch <search> with the article you wish to search for, '
                     'using quotes if there are spaces.')
     def _getsummary(self, page):
-        output = wikipedia.summary(page, sentences = 4).replace("( listen)", "").strip()
+        output = wikipedia.summary(page.title, sentences = 4).replace("( listen)", "").strip()
         if '== ' in output:
             output = output.split('== ')[0].strip()
         output += '\n\n<a href="{}">view article</a>'.format(page.url)
@@ -39,7 +39,7 @@ class Wikipedia(CommandBase):
             return
         page = wikipedia.page(args[0])
         bot.send_message(chat_id = update.message.chat_id,
-                         text = self._getsummary(page.title),
+                         text = self._getsummary(page),
                          parse_mode = 'HTML',
                          disable_notification = True,
                          disable_web_page_preview = True)
@@ -50,7 +50,7 @@ class Wikipedia(CommandBase):
                              text = "This doesn't seem like correct usage of /wikirandom.",
                              disable_notification = True)
             return
-        page = wikipedia.random(pages=1)
+        page = wikipedia.page(wikipedia.random(pages=1))
         bot.send_message(chat_id = update.message.chat_id,
                          text = self._getsummary(page),
                          parse_mode = 'HTML',
