@@ -25,6 +25,7 @@ class Wikipedia(CommandBase):
             return ('Call /wikisearch <search> with the article you wish to search for, '
                     'using quotes if there are spaces.')
     def _getsummary(self, page):
+        print(page)
         output = wikipedia.summary(page.title, sentences = 4).replace("( listen)", "").strip()
         if '== ' in output:
             output = output.split('== ')[0].strip()
