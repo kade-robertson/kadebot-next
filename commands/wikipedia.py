@@ -44,7 +44,7 @@ class Wikipedia(CommandBase):
                          disable_notification = True,
                          disable_web_page_preview = True)
     @bot_command
-    def execute_random:
+    def execute_random(self, bot, update, args):
         if len(args) != 0:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /wikirandom.",
