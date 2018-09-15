@@ -39,7 +39,7 @@ class Wikipedia(CommandBase):
             return
         page = wikipedia.page(args[0])
         bot.send_message(chat_id = update.message.chat_id,
-                         text = self._getsummary(page)
+                         text = self._getsummary(page),
                          parse_mode = 'HTML',
                          disable_notification = True,
                          disable_web_page_preview = True)
