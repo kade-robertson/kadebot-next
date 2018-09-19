@@ -187,7 +187,7 @@ class RSS(CommandBase):
                              text = "You don't have any feeds registered.",
                              disable_notification = True)
     @bot_command
-    def execute_feeddel(self, bot, update):
+    def execute_feeddel(self, bot, update, args):
         if len(args) != 1:
             bot.send_message(chat_id = update.message.chat_id,
                              text = "This doesn't seem like correct usage of /rssdel.",
