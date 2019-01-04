@@ -3,19 +3,18 @@
 import os
 import sys
 import shlex
+import logging
 import argparse
 import importlib
-
 import commands as _commands
-from commands import CommandBase, CommandType, CommandInfo
 
+from commands import CommandBase, CommandType, CommandInfo
 from subprocess import check_output
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
 from ruamel.yaml import YAML
-yaml = YAML(typ="safe", pure=True)
 
-import logging
+yaml = YAML(typ="safe", pure=True)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 baseconf = dict()
