@@ -15,7 +15,10 @@ from telegram.ext import CommandHandler, MessageHandler, Filters
 from ruamel.yaml import YAML
 
 yaml = YAML(typ="safe", pure=True)
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level = logging.INFO
+)
 
 baseconf = dict()
 commands = []
@@ -161,9 +164,9 @@ if __name__ == "__main__":
     parser  = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default=os.path.expanduser("~/.config/kadebot/kadebot.yaml"),
-        help="configuration file to use",
-        type=str
+        default = os.path.expanduser("~/.config/kadebot/kadebot.yaml"),
+        help = "configuration file to use",
+        type = str
     )
     args = parser.parse_args()
     if os.path.exists(args.config):
