@@ -11,7 +11,7 @@ import shlex
 import requests
 import populartimes
 from itertools import groupby
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class PopularTimes(CommandBase):
     name = "PopularTimes"

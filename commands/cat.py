@@ -4,7 +4,7 @@
 # Configuration: None
 
 import requests
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class Cat(CommandBase):
     name = "Cat"

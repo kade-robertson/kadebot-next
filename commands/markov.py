@@ -10,7 +10,7 @@
 import os
 import json
 import markovify
-from .basic import *
+from .basic import CommandBase, CommandInfo, CommandType, bot_command
 
 class Markov(CommandBase):
     name = "Markov"

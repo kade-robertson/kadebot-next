@@ -141,7 +141,6 @@ def main():
 
 def load_config(filename):
     global baseconf
-    global translator
     global commands
     conf = dict()
     with open(filename, 'r') as f:

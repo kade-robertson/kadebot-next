@@ -7,7 +7,7 @@
 
 import shlex
 import wolframalpha
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class Wolfram(CommandBase):
     name = "Wolfram"

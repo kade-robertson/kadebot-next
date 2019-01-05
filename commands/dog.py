@@ -6,7 +6,7 @@
 import shlex
 import string
 import requests
-from .basic import *
+from .basic import CommandBase, CommandInfo, CommandType, bot_command
 
 _doggos = {
     'germanshepherd': 'German Shepherd',

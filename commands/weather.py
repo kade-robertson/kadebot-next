@@ -11,7 +11,7 @@ import shlex
 import urllib
 import openweathermapy.core as owm
 from telegram import ParseMode
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 def emojify(wid):
     # Lightning

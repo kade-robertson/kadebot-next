@@ -12,7 +12,7 @@ import os
 import shlex
 import datetime
 import requests
-from .basic import *
+from .basic import CommandBase, CommandInfo, CommandType, bot_command
 
 class TodayFact(CommandBase):
     name = "TodayFact"
@@ -27,7 +27,7 @@ class TodayFact(CommandBase):
             CommandInfo("todaydel", self.execute_del, "Remove scheduled daily facts for this chat."),
             CommandInfo("fact_today", self.setup_facts, "Show scheduled daily facts", _type=CommandType.Schedule)
         ]
-    def get_help_msg():
+    def get_help_msg(self, cmd):
         return ""
     def load_config(self, confdict):
         self.regfile = confdict['datfile']

@@ -8,7 +8,7 @@
 #   user_agent: "name of your bot"
 
 import praw
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class RandomAww(CommandBase):
     name = "RandomAww"

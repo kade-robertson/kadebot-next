@@ -6,7 +6,7 @@
 # Configuration: None
 
 import urllib.parse
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class Google(CommandBase):
     name = "Google"

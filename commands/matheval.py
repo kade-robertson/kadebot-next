@@ -7,7 +7,7 @@
 
 import shlex
 from py_expression_eval import Parser
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class MathEval(CommandBase):
     name = "MathEval"

@@ -6,7 +6,7 @@
 
 import os
 import markovify
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 dat = None
 

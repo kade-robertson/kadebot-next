@@ -8,7 +8,7 @@
 
 import shlex
 import requests
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class XKCD(CommandBase):
     name = "XKCD"
@@ -41,7 +41,7 @@ class XKCD(CommandBase):
                              disable_notification = True)
             return
         comic = comic.json()
-        msg = '<b>Link:</b> {}\n'.format(comicurl, comic['title'])
+        msg = '<b>Link:</b> <a href="{}">{}</a>\n'.format(comicurl, comic['title'])
         msg += '<b>Date:</b> {}-{}-{}\n'.format(
             comic['year'].zfill(4), comic['month'].zfill(2), comic['day'].zfill(2)
         )

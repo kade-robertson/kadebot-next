@@ -6,7 +6,7 @@
 
 import shlex
 import wikipedia
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class Wikipedia(CommandBase):
     name = 'Wikipedia'

@@ -4,7 +4,7 @@
 # Configuration: None
 
 import random
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class EightBall(CommandBase):
     name = "8-ball"

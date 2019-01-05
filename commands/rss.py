@@ -17,7 +17,7 @@ import requests
 import datetime
 import feedparser
 from telegram import ParseMode
-from .basic import *
+from .basic import CommandBase, CommandInfo, CommandType, bot_command
 
 class RSS(CommandBase):
     name = "RSS"

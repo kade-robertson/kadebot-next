@@ -4,7 +4,7 @@
 # Schedules: None
 # Configuration None
 
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class ExamplePugin(CommandBase):
     name = "Example"

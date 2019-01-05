@@ -7,7 +7,7 @@
 
 import shlex
 from translate import Translator
-from .basic import *
+from .basic import CommandBase, CommandInfo, bot_command
 
 class Translate(CommandBase):
     name = "Translate"
