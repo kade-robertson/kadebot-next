@@ -28,7 +28,12 @@ class TodayFact(CommandBase):
             CommandInfo("fact_today", self.setup_facts, "Show scheduled daily facts", _type=CommandType.Schedule)
         ]
     def get_help_msg(self, cmd):
-        return ""
+        if cmd == "today":
+            return "Call /today with no arguments to see facts about today."
+        elif cmd == "todayreg":
+            return "Call /todayreg <hour> with the integer (0-23) for the hour you want to schedule updates for."
+        elif cmd == "todaydel":
+            return "Call /todaydel with no arguments stop receiving daily updates."
     def load_config(self, confdict):
         self.regfile = confdict['datfile']
         if os.path.isfile(self.regfile):
