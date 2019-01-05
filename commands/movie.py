@@ -4,7 +4,10 @@
 #   - /moviesearch
 # Configuration:
 # command.movie:
-#   api_key: "OMDb api key"
+#   api_key: "OMDb API key"
+#   fanart_key: "Optional - Fanart API key"
+#   fanart_ckey: "Optional - Fanart API client key"
+
 
 import re
 import omdb
@@ -24,6 +27,8 @@ class Movie(CommandBase):
         ]
     def load_config(self, confdict):
         self.api = omdb.OMDBClient(apikey = confdict["api_key"])
+        self.artkey = confdict['fanart_key'] 
+        self.artckey = confdict['fanart_ckey'] 
     def get_help_msg(self, cmd):
         if cmd == "movie":
             return 'Call /movie <id> with the IMDb ID of the movie you want information for.'
@@ -51,10 +56,21 @@ class Movie(CommandBase):
                  "IMDB Score: {} ({} votes)\n".format(movie['imdb_rating'], movie['imdb_votes']) + \
                  "Metascore: {}\n".format(movie['metascore']) + \
                  "Awards: {}\n\n".format(movie['awards']) + movie['plot']
-        if movie['poster'] != "N/A" and requests.get(movie['poster']).status_code == 200:
-            bot.send_photo(chat_id = update.message.chat_id,
-                           photo = movie['poster'],
-                           disable_notification = True)
+
+        if self.artkey and self.artckey:
+            images = requests.get(
+                'http://webservice.fanart.tv/v3/movies/{}'.format(movie['imdb_id']),
+                params = { 'api_key': self.artkey, 'client_key': self.artckey }
+            ).json()
+            if 'movieposter' in images:
+                english_posters = [poster for poster in images['movieposter'] if poster['lang'] == 'en']
+                bot.send_photo(chat_id = update.message.chat_id,
+                               photo = english_posters[0]['url'],
+                               disable_notification = True)
+            elif movie['poster'] != "N/A" and requests.get(movie['poster']).status_code == 200:
+                bot.send_photo(chat_id = update.message.chat_id,
+                               photo = movie['poster'],
+                               disable_notification = True)
         bot.send_message(chat_id = update.message.chat_id,
                          text = output,
                          parse_mode = 'HTML',

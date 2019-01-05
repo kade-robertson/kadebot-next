@@ -11,6 +11,8 @@ command.wolfram:
 
 command.movie:
   api_key: "xxxxx"
+  fanart_key: "xxxxx"
+  fanart_ckey: "xxxxx"
 
 command.translate:
   api_key: "xxxxx"
