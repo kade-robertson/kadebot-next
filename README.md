@@ -28,7 +28,11 @@ Configuration for individual commands can be seen in the command file itself, or
    ```
    pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha markovify openweathermapy emoji feedparser py_expression_eval
    ```
-   You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges. You will also need [populartimes](https://github.com/m-wrzr/populartimes) which is not available on PyPi if you plan on setting up /popular.
+   or
+   ```
+   pip install -r requirements.txt
+   ```
+   You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges. You will also need [populartimes](https://github.com/m-wrzr/populartimes) which is not available on PyPi if you plan on setting up the `/popular` command.
 3. Get a bot token for Telegram, through @BotFather.
 4. Get your user ID for Telegram, through @myidbot.
 5. Modify `default.yaml` and configure whatever you would like. Optionally, copy the configuration to `~/.config/kadebot/kadebot.yaml` to avoid using the `--config` option.

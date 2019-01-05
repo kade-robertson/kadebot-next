@@ -1,0 +1,13 @@
+emoji
+feedparser
+markovify
+omdb
+openweathermapy
+praw
+python-telegram-bot
+py_expression_eval
+requests
+ruamel.yaml
+translate
+wikipedia
+wolframalpha
