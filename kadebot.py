@@ -51,7 +51,8 @@ def reload(bot, update):
 def update(bot, update):
     if update.message.from_user.id in baseconf["admins"]:
         logging.info("Updating bot...")
-        os.system("git pull --force")
+        os.system("git fetch origin master")
+        os.system("git reset --hard origin/master")
         reload(bot, update)
 
 def cmdlist(bot, update):
