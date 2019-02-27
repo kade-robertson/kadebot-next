@@ -1,8 +1,20 @@
-# kadebot
+# kadebot-next
 
-A Telegram chat bot, built in Python. This was not designed for mass-usage, rather you should host this yourself for a small number of chats. This was primarily designed around being used in one chat and some parts might not be able to scale as well. It was probably also not designed with good practices in mind, and there are absolutely no tests whatsoever.
+A next-gen Telegram chat bot, built in Python. The whole idea of this "next" version of kadebot is to move towards removing direct commands and instead parsing natural conversations to provide useful help. There will be multiple ways to do this by way of what I'm going to call "intent providers". Initially development is going to be done with [wit.ai](https://wit.ai) as the sole intent provider, but I do intend to make it easy to support others like DialogFlow.
 
-# Configuration
+# Roadmap
+
+- [ ] Re-make main process loop
+- [ ] Implement an intent provider
+  - [ ] wit.ai
+  - [ ] DialogFlow
+- [ ] Re-make many kadebot commands to fit the new paradigm
+  - [ ] Weather
+  - [ ] Movie info
+  - [ ] Wikipedia Search
+  - [ ] Others to be added
+
+## Configuration
 
 The base set of configuration requires you to specify your Telegram bot token, any administrators (people you want to have access to /reload, /update, /kill), and you may disable any command, monitor, scheduled task, or even entire module you don't want to use. For example, your base section may look like this:
 ```yaml
@@ -12,8 +24,7 @@ base:
     - 1234567890
     - 8888888888
   disabled:
-    - t
-    - randomaww
+    - movie
   disabled_monitors: []
   disabled_schedules: []
   disabled_modules:
@@ -21,25 +32,24 @@ base:
 ```
 Configuration for individual commands can be seen in the command file itself, or refer to the `default.yaml` to see what options are available.
 
-# Development
+## Development
 
 1. Clone the repository.
 2. Install the required dependencies for whichever modules you are using. If you want to use everything:
    ```
-   pip install python-telegram-bot ruamel.yaml requests omdb praw translate wikipedia wolframalpha markovify openweathermapy emoji feedparser py_expression_eval
-   ```
-   or
-   ```
    pip install -r requirements.txt
    ```
-   You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges. You will also need [populartimes](https://github.com/m-wrzr/populartimes) which is not available on PyPi if you plan on setting up the `/popular` command.
+   You may need to run as `sudo` or with the `--user` flag if you don't have `sudo` priveledges.
 3. Get a bot token for Telegram, through @BotFather.
 4. Get your user ID for Telegram, through @myidbot.
 5. Modify `default.yaml` and configure whatever you would like. Optionally, copy the configuration to `~/.config/kadebot/kadebot.yaml` to avoid using the `--config` option.
 6. Configure each plugin's configuration as specified in their files.
-7. Run the bot in one of a few ways:
+7. Install in editable mode:
    ```
-   ./kadeboy.py
-   ./kadebot.py --config file.yaml
-   python3 kadebot.py --config file.yaml
+   pip install -e .
+   ``` 
+8. Run the bot in one of a few ways:
+   ```
+   kadebot
+   kadebot --config file.yaml
    ```

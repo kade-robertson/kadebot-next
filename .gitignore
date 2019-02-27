@@ -6,3 +6,4 @@ markov_data/*
 rss_data/*
 .vscode/*
 factchats.txt
+kadebot.egg-info/*
