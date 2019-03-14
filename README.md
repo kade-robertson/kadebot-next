@@ -53,3 +53,5 @@ Configuration for individual commands can be seen in the command file itself, or
    kadebot
    kadebot --config file.yaml
    ```
+
+TESTING NEW GPG KEY
