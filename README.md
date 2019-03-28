@@ -4,6 +4,7 @@ A next-gen Telegram chat bot, built in Python. The whole idea of this "next" ver
 
 # Roadmap
 
+- [ ] Implement configuration reader
 - [ ] Re-make main process loop
 - [ ] Implement an intent provider
   - [ ] wit.ai
