@@ -18,20 +18,11 @@ A next-gen Telegram chat bot, built in Python. The whole idea of this "next" ver
 ## Configuration
 
 The base set of configuration requires you to specify your Telegram bot token, any administrators (people you want to have access to /reload, /update, /kill), and you may disable any command, monitor, scheduled task, or even entire module you don't want to use. For example, your base section may look like this:
-```yaml
-base:
-  api_key: "notarealkey"
-  admins:
-    - 1234567890
-    - 8888888888
-  disabled:
-    - movie
-  disabled_monitors: []
-  disabled_schedules: []
-  disabled_modules:
-    - SonnetGen
+```ini
+[kadebot]
+api_key = thisisa:keyfromtelegram
+admins = 1234567890,8888888888
 ```
-Configuration for individual commands can be seen in the command file itself, or refer to the `default.yaml` to see what options are available.
 
 ## Development
 
