@@ -36,11 +36,10 @@ def main():
 
     if not config.valid:
         print(
-            'The config file provided ({}) was not valid. Ensure you have an api_key in the [kadebot] section.',
+            f'The config file provided ({config_path}) was not valid. Ensure you have an api_key in the [kadebot] section.',
             file=sys.stderr)
         sys.exit(1)
 
-    print(type(args))
     setup_bot(args, config)
 
 
